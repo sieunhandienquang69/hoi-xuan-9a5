@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>9A5 - CUỐN GÌ CŨNG DÍNH | THCS Nguyễn Gia Thiều</title>
+    <title>9A5 - GÓI GHÉM VỊ XUÂN | THCS Nguyễn Gia Thiều</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
@@ -17,155 +17,156 @@
         }
 
         :root {
-            --primary: #2d5a27; 
-            --secondary: #f39c12;
-            --light: #fdfaf5;
-            --dark: #1e391a;
+            --primary: #1b4d3e; /* Xanh lá đậm sang trọng */
+            --secondary: #d4af37; /* Màu vàng đồng tinh tế */
+            --light: #fffcf9;
+            --dark: #2d3436;
         }
 
         * { box-sizing: border-box; scroll-behavior: smooth; }
         body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; background-color: var(--light); color: var(--dark); overflow-x: hidden; }
 
-        h1, h2, .modal-title { 
-            font-family: 'BoleroesqueHonora', serif; 
-            font-weight: normal;
-        }
+        h1, h2, .modal-title { font-family: 'BoleroesqueHonora', serif; font-weight: normal; }
 
         /* HERO SECTION */
         .hero {
             height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
                         url('https://cdn.netspace.edu.vn/images/2020/04/25/cach-lam-goi-cuon-tom-thit-cuc-ki-hap-dan-245587-800.jpg') center/cover;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             text-align: center; color: white; padding: 20px;
         }
-        .hero h1 { font-size: 5rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .hero p { font-size: 1.5rem; margin-bottom: 30px; }
+        .hero h1 { font-size: 6rem; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.3); }
+        .hero p { font-size: 1.8rem; margin-bottom: 30px; font-weight: 300; letter-spacing: 2px; }
 
-        .info-badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px 20px; border-radius: 50px;
-            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);
-            margin-bottom: 20px; color: white; font-weight: bold;
+        .class-badge {
+            border: 2px solid var(--secondary);
+            padding: 8px 30px; border-radius: 0;
+            margin-bottom: 20px; color: var(--secondary);
+            font-weight: bold; text-transform: uppercase;
         }
 
-        /* SECTION CHUNG */
-        .container { max-width: 1100px; margin: auto; padding: 60px 20px; }
-        .section-title { text-align: center; margin-bottom: 40px; }
-        .section-title h2 { font-size: 3.5rem; color: var(--primary); display: inline-block; border-bottom: 3px solid var(--secondary); padding-bottom: 10px; }
+        /* GIỚI THIỆU */
+        .container { max-width: 1000px; margin: auto; padding: 80px 20px; }
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title h2 { font-size: 4rem; color: var(--primary); margin: 0; }
+        .divider { width: 60px; height: 3px; background: var(--secondary); margin: 15px auto; }
 
-        /* GIỚI THIỆU GIAN HÀNG */
-        .intro-text { text-align: center; font-size: 1.2rem; line-height: 1.8; max-width: 800px; margin: auto; }
+        .intro-text { text-align: center; font-size: 1.3rem; line-height: 1.9; color: #555; max-width: 800px; margin: auto; }
 
         /* MENU CARDS */
         .menu-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px; margin-top: 40px;
+            gap: 30px; margin-top: 50px;
         }
         .card {
-            background: white; border-radius: 20px; padding: 30px; text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05); cursor: pointer;
-            transition: 0.3s; border: 1px solid #eee;
+            background: white; border-radius: 15px; padding: 40px 25px; text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03); cursor: pointer;
+            transition: 0.4s; border: 1px solid #f0f0f0;
+            position: relative; overflow: hidden;
         }
-        .card:hover { transform: translateY(-10px); border-color: var(--secondary); background: #fffdf9; }
-        .card h3 { color: var(--primary); font-size: 1.6rem; margin-bottom: 10px; }
-        .card-price { color: var(--secondary); font-weight: bold; font-size: 1.4rem; }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--primary);
+        }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(27, 77, 62, 0.1); border-color: var(--secondary); }
+        .card h3 { color: var(--primary); font-size: 1.9rem; margin-bottom: 15px; }
+        .card-price { color: var(--secondary); font-weight: bold; font-size: 1.5rem; letter-spacing: 1px; }
 
-        /* LÝ DO CHỌN GIAN HÀNG (HIGHLIGHTS) */
-        .highlights { background: var(--primary); color: white; padding: 80px 20px; text-align: center; }
+        /* HIGHLIGHTS */
+        .highlights { background: #112d25; color: white; padding: 100px 20px; text-align: center; }
         .highlight-grid { 
             display: grid; grid-template-columns: repeat(3, 1fr); 
-            max-width: 1000px; margin: 40px auto 0; gap: 30px;
+            max-width: 1000px; margin: 60px auto 0; gap: 50px;
         }
-        .h-item i { font-size: 2.5rem; color: var(--secondary); margin-bottom: 15px; display: block; }
-        .h-item h3 { font-size: 1.5rem; margin-bottom: 10px; }
-        .h-item p { font-size: 1rem; opacity: 0.9; }
+        .h-item i { font-size: 3rem; color: var(--secondary); margin-bottom: 25px; display: block; }
+        .h-item h3 { font-size: 1.5rem; margin-bottom: 15px; color: var(--secondary); }
+        .h-item p { font-size: 1.1rem; opacity: 0.8; line-height: 1.6; }
 
-        /* MODAL (HỘP THÔNG TIN) */
+        /* MODAL */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); display: none;
+            background: rgba(0,0,0,0.8); display: none;
             justify-content: center; align-items: center; z-index: 1000;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(5px);
         }
         .modal-content {
-            background: white; width: 90%; max-width: 800px; border-radius: 30px;
+            background: white; width: 90%; max-width: 850px; border-radius: 20px;
             display: flex; flex-direction: row; overflow: hidden;
-            position: relative; animation: zoomIn 0.3s;
+            position: relative; animation: fadeInDown 0.4s;
         }
-        .modal-img { width: 50%; object-fit: cover; background: #eee; min-height: 300px; }
-        .modal-info { width: 50%; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
-        .modal-title { font-size: 3rem; color: var(--primary); margin-bottom: 15px; line-height: 1; }
-        .modal-desc { font-size: 1.1rem; line-height: 1.6; color: #555; margin-bottom: 20px; }
+        .modal-img { width: 50%; object-fit: cover; background: #eee; min-height: 400px; }
+        .modal-info { width: 50%; padding: 50px; display: flex; flex-direction: column; justify-content: center; }
+        .modal-title { font-size: 3.5rem; color: var(--primary); margin-bottom: 20px; }
+        .modal-desc { font-size: 1.2rem; line-height: 1.8; color: #444; margin-bottom: 30px; }
         .close-btn { 
             position: absolute; top: 20px; right: 25px; font-size: 2.5rem; 
-            cursor: pointer; color: #333; z-index: 10;
+            cursor: pointer; color: #999; z-index: 10;
         }
 
-        /* MOBILE RESPONSIVE */
+        /* MOBILE */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 3.5rem; }
-            .section-title h2 { font-size: 2.5rem; }
-            .highlight-grid { grid-template-columns: 1fr; }
-            .modal-content { flex-direction: column; height: auto; max-height: 90vh; overflow-y: auto; }
+            .hero h1 { font-size: 3.8rem; }
+            .hero p { font-size: 1.4rem; }
+            .highlight-grid { grid-template-columns: 1fr; gap: 30px; }
+            .modal-content { flex-direction: column; max-height: 90vh; }
             .modal-img { width: 100%; height: 250px; }
-            .modal-info { width: 100%; padding: 25px; }
-            .modal-title { font-size: 2.2rem; }
+            .modal-info { width: 100%; padding: 30px; }
         }
 
         .btn {
-            padding: 15px 35px; background: var(--secondary); color: white;
-            text-decoration: none; border-radius: 50px; font-weight: bold;
-            display: inline-block; transition: 0.3s; box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+            padding: 18px 50px; background: transparent; color: white;
+            text-decoration: none; border: 1px solid white; font-weight: bold;
+            display: inline-block; transition: 0.3s; letter-spacing: 2px;
         }
-        .btn:hover { transform: scale(1.05); background: #e67e22; }
+        .btn:hover { background: white; color: var(--primary); }
     </style>
 </head>
 <body>
 
     <section class="hero">
-        <div class="info-badge">THCS NGUYỄN GIA THIỀU • 06.02.2026</div>
-        <h1 class="animate__animated animate__fadeInDown">9A5 - CUỐN GÌ CŨNG DÍNH</h1>
-        <p class="animate__animated animate__fadeInUp">"Xuân có hội, 9A5 có Gỏi.Cuốn bao dính, Ăn là ghiền!"</p>
+        <div class="class-badge">Hội Xuân 2026 • Tập Thể 9A5</div>
+        <h1 class="animate__animated animate__fadeIn">GÓI GHÉM VỊ XUÂN</h1>
+        <p>"Gói ghém chân tình - Gửi trao vị Tết"</p>
         <a href="#menu" class="btn">KHÁM PHÁ THỰC ĐƠN</a>
     </section>
 
     <div class="container">
         <div class="section-title">
-            <h2>Gói Trọn Vị Xuân</h2>
+            <h2>Hương Vị Cuối Cấp</h2>
+            <div class="divider"></div>
         </div>
         <div class="intro-text">
-            <p>Chào các bạn học sinh Nguyễn Gia Thiều! Bạn muốn ăn ngon nhưng lại sợ béo hay nổi mụn? Ghé ngay 9A5 nhé! Chúng mình mang đến thực đơn Gỏi Cuốn thanh mát, nguyên liệu tươi sạch 100%, chuẩn vị "nhà làm" để tiếp sức cho các bạn quẩy hội xuân cả ngày!</p>
+            <p>Tại gian hàng 9A5, mỗi cuốn gỏi là một câu chuyện. Chúng mình chọn những nguyên liệu tươi ngon nhất, gói ghém tỉ mỉ bằng cả sự nhiệt huyết của tuổi học trò. Không chỉ là ẩm thực, đây là món quà thay lời cảm ơn gửi đến thầy cô và bạn bè đã đồng hành cùng 9A5 dưới mái trường Nguyễn Gia Thiều yêu dấu.</p>
         </div>
     </div>
 
-    <section id="menu" style="background: #fff; padding: 40px 0;">
+    <section id="menu" style="background: #fff; padding: 100px 0;">
         <div class="container">
             <div class="section-title">
-                <h2>Thực Đơn Ngũ Sắc</h2>
+                <h2>Mỹ Vị Gian Hàng</h2>
+                <div class="divider"></div>
             </div>
-            <p style="text-align: center; margin-top: -20px; color: #777;">(Bấm vào từng món để xem ảnh và chi tiết)</p>
             
             <div class="menu-grid">
                 <div class="card" onclick="showDetail('tom-thit')">
-                    <h3>Gỏi Cuốn Tôm Thịt</h3>
-                    <div class="card-price">5.000đ</div>
+                    <h3>Gỏi "Đoàn Viên"</h3>
+                    <div class="card-price">5.000 VNĐ</div>
                 </div>
                 <div class="card" onclick="showDetail('nem-nuong')">
-                    <h3>Gỏi Cuốn Nem Nướng</h3>
-                    <div class="card-price">5.000đ</div>
+                    <h3>Gỏi "Nhiệt Huyết"</h3>
+                    <div class="card-price">5.000 VNĐ</div>
                 </div>
                 <div class="card" onclick="showDetail('bi')">
-                    <h3>Gỏi Cuốn Bì</h3>
-                    <div class="card-price">5.000đ</div>
+                    <h3>Gỏi "Mộc Mạc"</h3>
+                    <div class="card-price">5.000 VNĐ</div>
                 </div>
                 <div class="card" onclick="showDetail('trung')">
-                    <h3>Gỏi Cuốn Trứng</h3>
-                    <div class="card-price">5.000đ</div>
+                    <h3>Gỏi "Rạng Rỡ"</h3>
+                    <div class="card-price">5.000 VNĐ</div>
                 </div>
                 <div class="card" onclick="showDetail('tai-heo')">
-                    <h3>Gỏi Cuốn Tai Heo</h3>
-                    <div class="card-price">5.000đ</div>
+                    <h3>Gỏi "Vui Vẻ"</h3>
+                    <div class="card-price">5.000 VNĐ</div>
                 </div>
             </div>
         </div>
@@ -174,23 +175,24 @@
     <section class="highlights">
         <div class="container">
             <div class="section-title">
-                <h2 style="color: white; border-bottom-color: white;">Tại sao nên chọn 9A5?</h2>
+                <h2 style="color: white;">Cam Kết Từ 9A5</h2>
+                <div class="divider" style="background: var(--secondary);"></div>
             </div>
             <div class="highlight-grid">
                 <div class="h-item">
                     <i class="fas fa-leaf"></i>
-                    <h3>TƯƠI SẠCH</h3>
-                    <p>Nguyên liệu được chọn lọc kĩ càng và chuẩn bị ngay trong sáng sớm ngày hội.</p>
+                    <h3>TỰ NHIÊN</h3>
+                    <p>Rau sạch, thịt tươi, hoàn toàn không chất bảo quản. Ngon như mẹ làm, sạch như lớp học 9A5.</p>
                 </div>
                 <div class="h-item">
-                    <i class="fas fa-mortar-pestle"></i>
-                    <h3>SỐT BÍ TRUYỀN</h3>
-                    <p>Sốt bí mật thơm ngon, công thức độc quyền của lớp mình.</p>
+                    <i class="fas fa-utensils"></i>
+                    <h3>TỈ MỈ</h3>
+                    <p>Mỗi cuốn gỏi đều được cuốn "đều tay" bởi các nghệ nhân ẩm thực không chuyên của lớp.</p>
                 </div>
                 <div class="h-item">
-                    <i class="fas fa-camera-retro"></i>
-                    <h3>VIEW ĐẸP</h3>
-                    <p>Gian hàng trang trí phong cách mẹt tre lá chuối cực xinh, tha hồ cho các bạn check-in.</p>
+                    <i class="fas fa-heart"></i>
+                    <h3>CHÂN THÀNH</h3>
+                    <p>Phục vụ bằng nụ cười và sự nhiệt tình nhất. Ăn một cuốn, vui cả buổi hội xuân!</p>
                 </div>
             </div>
         </div>
@@ -202,47 +204,47 @@
             <img src="" alt="Món ăn" class="modal-img" id="modal-img">
             <div class="modal-info">
                 <div class="modal-title" id="modal-title">Tên Món Ăn</div>
-                <p class="modal-desc" id="modal-desc">Mô tả chi tiết...</p>
-                <div class="card-price" id="modal-price" style="font-size: 2rem;">5.000đ</div>
+                <p class="modal-desc" id="modal-desc">Mô tả...</p>
+                <div class="card-price" id="modal-price" style="font-size: 2.2rem; color: var(--primary);">5.000 VNĐ</div>
             </div>
         </div>
     </div>
 
-    <footer style="text-align: center; padding: 60px 20px; background: #eee;">
-        <p><strong>LỚP 9A5 - GIAN HÀNG SỐ 04</strong></p>
-        <p>Hội Xuân THCS Nguyễn Gia Thiều • 06.02.2026</p>
+    <footer style="text-align: center; padding: 80px 20px; background: #f9f9f9; border-top: 1px solid #eee;">
+        <p style="letter-spacing: 3px;"><strong>TẬP THỂ LỚP 9A5</strong></p>
+        <p style="opacity: 0.6; font-size: 0.9rem;">Hội Xuân THCS Nguyễn Gia Thiều • Năm học 2025 - 2026</p>
     </footer>
 
     <script>
         const menuData = {
             'tom-thit': {
-                title: 'Gỏi Cuốn Tôm Thịt',
-                desc: 'Món ăn truyền thống nhất với tôm luộc đỏ tươi, thịt ba chỉ cắt mỏng và rau sống thanh mát. Chấm cùng tương đen bơ đậu phộng hành phi thơm nức.',
-                price: '5.000đ',
+                title: 'Gỏi "Đoàn Viên"',
+                desc: 'Sự kết hợp kinh điển của Tôm và Thịt. Tượng trưng cho sự gắn kết bền chặt của tập thể 9A5 chúng mình.',
+                price: '5.000 VNĐ',
                 img: 'https://cdn.tgdd.vn/Files/2021/10/21/1392444/tong-hop-8-cach-lam-goi-cuon-ngon-hap-dan-sieu-de-lam-tai-nha-202110211125270560.jpg'
             },
             'nem-nuong': {
-                title: 'Gỏi Cuốn Nem Nướng',
-                desc: 'Thơm nức mùi thịt nướng sả, ăn kèm dưa leo giòn và cà rốt ngâm chua. Mang lại vị đậm đà, lạ miệng khó cưỡng.',
-                price: '5.000đ',
+                title: 'Gỏi "Nhiệt Huyết"',
+                desc: 'Vị nem nướng đậm đà, thơm lừng mùi khói. Giống như ngọn lửa nhiệt huyết của tuổi trẻ lớp 9 luôn rực cháy.',
+                price: '5.000 VNĐ',
                 img: 'https://nemnuonghungviet.com/nemhungviet/uploads/2024/12/goi-cuon-nem-nuong.jpg'
             },
             'bi': {
-                title: 'Gỏi Cuốn Bì',
-                desc: 'Sự kết hợp của bì heo dai giòn sần sật, thính gạo rang thơm lừng và nước mắm chua ngọt đặc chế riêng của 9A5.',
-                price: '5.000đ',
+                title: 'Gỏi "Mộc Mạc"',
+                desc: 'Gỏi cuốn bì với vị thính thơm nồng. Giản dị, chân phương như những tình cảm học trò trong sáng nhất.',
+                price: '5.000 VNĐ',
                 img: 'https://afamilycdn.com/thumb_w/650/150157425591193600/2021/3/19/bi-cuon99-1-1616150003378626234564.jpg'
             },
             'trung': {
-                title: 'Gỏi Cuốn Trứng',
-                desc: 'Lớp trứng chiên mỏng vàng rực bọc lấy bún tươi và rau xanh. Lựa chọn tuyệt vời cho các bạn thích vị thanh nhẹ, healthy.',
-                price: '5.000đ',
+                title: 'Gỏi "Rạng Rỡ"',
+                desc: 'Lớp trứng vàng óng bao bọc bên ngoài. Chúc cho tương lai của mỗi chúng ta đều sẽ rạng rỡ như thế.',
+                price: '5.000 VNĐ',
                 img: 'https://image.eatencdn.com/image/801b0cd5-3da6-4413-9265-7fad9189eb13/small/image.jpg'
             },
             'tai-heo': {
-                title: 'Gỏi Cuốn Tai Heo',
-                desc: 'Tai heo được luộc chín tới để giữ độ giòn sần sật đặc trưng, cuốn kèm rau thơm, chấm mắm nêm đậm đà.',
-                price: '5.000đ',
+                title: 'Gỏi "Vui Vẻ"',
+                desc: 'Tai heo giòn sần sật cực kỳ bắt miệng. Ăn vào là thấy tinh thần phấn chấn, tiếng cười vang rộn khắp hội xuân.',
+                price: '5.000 VNĐ',
                 img: 'https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/2024_1_20_638413447115599304_tai-heo-cuon-banh-trang.jpg'
             }
         };
@@ -254,12 +256,12 @@
             document.getElementById('modal-price').innerText = item.price;
             document.getElementById('modal-img').src = item.img;
             document.getElementById('modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Khóa cuộn trang khi mở popup
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
             document.getElementById('modal').style.display = 'none';
-            document.body.style.overflow = 'auto'; // Mở lại cuộn trang
+            document.body.style.overflow = 'auto';
         }
 
         window.onclick = function(event) {
