@@ -126,202 +126,127 @@
             text-decoration: none; border-radius: 50px; font-weight: bold;
             display: inline-block; transition: 0.3s; border: none; cursor: pointer;
             box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+
+            
         }
         .btn:hover { transform: scale(1.05); background: #e67e22; }
+        .auth-nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        /* ẨN/HIỆN TRƯỜNG ĐĂNG KÝ */
+        #register-fields {
+            display: none; /* Mặc định ẩn */
+        }
     </style>
-</head>
-<body>
 
-    <section class="hero">
-        <div class="info-badge">THCS NGUYỄN GIA THIỀU • 06.02.2026</div>
-        <h1 class="animate__animated animate__fadeInDown">9A5 - CUỐN GÌ CŨNG DÍNH</h1>
-        <p class="animate__animated animate__fadeInUp">"Xuân có hội, 9A5 có Gỏi. Cuốn bao dính, Ăn là ghiền!"</p>
-        <div class="animate__animated animate__fadeInUp">
-            <a href="#menu" class="btn">KHÁM PHÁ THỰC ĐƠN</a>
-            <button onclick="toggleLoginModal()" class="btn" style="background: rgba(255,255,255,0.2); border: 1px solid white; margin-left: 10px;">ĐĂNG NHẬP</button>
-        </div>
-    </section>
-
-    <div class="container">
-        <div class="section-title">
-            <h2>Gói Trọn Vị Xuân</h2>
-        </div>
-        <div class="intro-text">
-            <p>Chào các bạn học sinh Nguyễn Gia Thiều! Bạn muốn ăn ngon nhưng lại sợ béo hay nổi mụn? Ghé ngay 9A5 nhé! Chúng mình mang đến thực đơn Gỏi Cuốn thanh mát, nguyên liệu tươi sạch 100%, chuẩn vị "nhà làm" để tiếp sức cho các bạn quẩy hội xuân cả ngày!</p>
-        </div>
-    </div>
-
-    <section id="menu" style="background: #fff; padding: 40px 0;">
-        <div class="container">
-            <div class="section-title">
-                <h2>Thực Đơn Ngũ Sắc</h2>
-            </div>
-            <p style="text-align: center; margin-top: -20px; color: #777;">(Bấm vào từng món để xem ảnh và chi tiết)</p>
-            
-            <div class="menu-grid">
-                <div class="card" onclick="showDetail('tom-thit')">
-                    <h3>Gỏi Cuốn Tôm Thịt</h3>
-                    <div class="card-price">5.000đ</div>
-                </div>
-                <div class="card" onclick="showDetail('nem-nuong')">
-                    <h3>Gỏi Cuốn Nem Nướng</h3>
-                    <div class="card-price">5.000đ</div>
-                </div>
-                <div class="card" onclick="showDetail('bi')">
-                    <h3>Gỏi Cuốn Bì</h3>
-                    <div class="card-price">5.000đ</div>
-                </div>
-                <div class="card" onclick="showDetail('trung')">
-                    <h3>Gỏi Cuốn Trứng</h3>
-                    <div class="card-price">5.000đ</div>
-                </div>
-                <div class="card" onclick="showDetail('tai-heo')">
-                    <h3>Gỏi Cuốn Tai Heo</h3>
-                    <div class="card-price">5.000đ</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="highlights">
-        <div class="container">
-            <div class="section-title">
-                <h2 style="color: white; border-bottom-color: white;">Tại sao nên chọn 9A5?</h2>
-            </div>
-            <div class="highlight-grid">
-                <div class="h-item">
-                    <i class="fas fa-leaf"></i>
-                    <h3>TƯƠI SẠCH</h3>
-                    <p>Nguyên liệu được chọn lọc kĩ càng và chuẩn bị ngay trong sáng sớm ngày hội.</p>
-                </div>
-                <div class="h-item">
-                    <i class="fas fa-mortar-pestle"></i>
-                    <h3>SỐT BÍ TRUYỀN</h3>
-                    <p>Sốt bí mật thơm ngon, công thức độc quyền của lớp mình.</p>
-                </div>
-                <div class="h-item">
-                    <i class="fas fa-camera-retro"></i>
-                    <h3>VIEW ĐẸP</h3>
-                    <p>Gian hàng trang trí phong cách mẹt tre lá chuối cực xinh, tha hồ cho các bạn check-in.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="modal-overlay" id="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <img src="" alt="Món ăn" class="modal-img" id="modal-img">
-            <div class="modal-info">
-                <div class="modal-title" id="modal-title">Tên Món Ăn</div>
-                <p class="modal-desc" id="modal-desc">Mô tả chi tiết...</p>
-                <div class="card-price" id="modal-price" style="font-size: 2rem;">5.000đ</div>
-            </div>
-        </div>
-    </div>
+    <nav class="auth-nav">
+        <button class="nav-btn" onclick="openAuthModal('login')">Đăng nhập</button>
+        <button class="nav-btn" onclick="openAuthModal('register')" style="background: var(--secondary); border: none;">Đăng ký</button>
+    </nav>
 
     <div class="modal-overlay" id="login-modal">
         <div class="modal-content" style="max-width: 400px; padding: 30px; flex-direction: column;">
             <span class="close-btn" onclick="toggleLoginModal()">&times;</span>
-            <h2 style="text-align: center; margin-bottom: 20px; color: var(--primary);">Thành viên 9A5</h2>
+            <h2 id="auth-title" style="text-align: center; margin-bottom: 20px; color: var(--primary);">Thành viên 9A5</h2>
             
-            <input type="email" placeholder="Email" class="login-input">
-            <input type="password" placeholder="Mật khẩu" class="login-input">
+            <div id="register-fields">
+                <input type="text" placeholder="Họ và tên" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd;">
+            </div>
+
+            <input type="email" placeholder="Email" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd;">
+            <input type="password" placeholder="Mật khẩu" style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ddd;">
             
-            <button class="btn" style="width: 100%; margin-bottom: 15px;">ĐĂNG NHẬP</button>
+            <button id="auth-submit-btn" class="btn" style="width: 100%; border: none; cursor: pointer;">ĐĂNG NHẬP</button>
             
-            <div style="text-align: center; margin: 10px 0; color: #777; position: relative;">
-                <span style="background: #fff; padding: 0 10px; position: relative; z-index: 1;">Hoặc</span>
+            <div style="text-align: center; margin: 20px 0; color: #777; position: relative;">
+                <span style="background: #fff; padding: 0 10px; position: relative; z-index: 1;">Hoặc đăng nhập bằng</span>
                 <hr style="position: absolute; top: 50%; width: 100%; border: 0; border-top: 1px solid #eee;">
             </div>
 
             <div id="buttonDiv" style="display: flex; justify-content: center;"></div>
             
             <p style="text-align: center; margin-top: 20px; font-size: 0.9rem;">
-                Chưa có tài khoản? <a href="#" style="color: var(--secondary); font-weight: bold; text-decoration: none;">Đăng ký ngay</a>
+                <span id="auth-switch-text">Chưa có tài khoản?</span> 
+                <a href="javascript:void(0)" onclick="switchAuthMode()" id="auth-link" style="color: var(--secondary); font-weight: bold;">Đăng ký ngay</a>
             </p>
         </div>
     </div>
 
-    <footer style="text-align: center; padding: 60px 20px; background: #eee;">
-        <p><strong>LỚP 9A5 - GIAN HÀNG SỐ 04</strong></p>
-        <p>Hội Xuân THCS Nguyễn Gia Thiều • 06.02.2026</p>
-    </footer>
-
     <script>
-        const menuData = {
-            'tom-thit': {
-                title: 'Gỏi Cuốn Tôm Thịt',
-                desc: 'Món ăn truyền thống nhất với tôm luộc đỏ tươi, thịt ba chỉ cắt mỏng và rau sống thanh mát. Chấm cùng tương đen bơ đậu phộng hành phi thơm nức.',
-                price: '5.000đ',
-                img: 'https://cdn.tgdd.vn/Files/2021/10/21/1392444/tong-hop-8-cach-lam-goi-cuon-ngon-hap-dan-sieu-de-lam-tai-nha-202110211125270560.jpg'
-            },
-            'nem-nuong': {
-                title: 'Gỏi Cuốn Nem Nướng',
-                desc: 'Thơm nức mùi thịt nướng sả, ăn kèm dưa leo giòn và cà rốt ngâm chua. Mang lại vị đậm đà, lạ miệng khó cưỡng.',
-                price: '5.000đ',
-                img: 'https://nemnuonghungviet.com/nemhungviet/uploads/2024/12/goi-cuon-nem-nuong.jpg'
-            },
-            'bi': {
-                title: 'Gỏi Cuốn Bì',
-                desc: 'Sự kết hợp của bì heo dai giòn sần sật, thính gạo rang thơm lừng và nước mắm chua ngọt đặc chế riêng của 9A5.',
-                price: '5.000đ',
-                img: 'https://afamilycdn.com/thumb_w/650/150157425591193600/2021/3/19/bi-cuon99-1-1616150003378626234564.jpg'
-            },
-            'trung': {
-                title: 'Gỏi Cuốn Trứng',
-                desc: 'Lớp trứng chiên mỏng vàng rực bọc lấy bún tươi và rau xanh. Lựa chọn tuyệt vời cho các bạn thích vị thanh nhẹ, healthy.',
-                price: '5.000đ',
-                img: 'https://image.eatencdn.com/image/801b0cd5-3da6-4413-9265-7fad9189eb13/small/image.jpg'
-            },
-            'tai-heo': {
-                title: 'Gỏi Cuốn Tai Heo',
-                desc: 'Tai heo được luộc chín tới để giữ độ giòn sần sật đặc trưng, cuốn kèm rau thơm, chấm mắm nêm đậm đà.',
-                price: '5.000đ',
-                img: 'https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/2024_1_20_638413447115599304_tai-heo-cuon-banh-trang.jpg'
-            }
-        };
+        // Logic điều khiển Modal Đăng nhập/Đăng ký
+        let isRegisterMode = false;
 
-        // --- HÀM CHO MODAL THỰC ĐƠN ---
-        function showDetail(id) {
-            const item = menuData[id];
-            document.getElementById('modal-title').innerText = item.title;
-            document.getElementById('modal-desc').innerText = item.desc;
-            document.getElementById('modal-price').innerText = item.price;
-            document.getElementById('modal-img').src = item.img;
-            document.getElementById('modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+        function openAuthModal(mode) {
+            isRegisterMode = (mode === 'register');
+            updateAuthUI();
+            document.getElementById('login-modal').style.display = 'flex';
         }
 
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
+        function switchAuthMode() {
+            isRegisterMode = !isRegisterMode;
+            updateAuthUI();
+        }
+
+        function updateAuthUI() {
+            const title = document.getElementById('auth-title');
+            const regFields = document.getElementById('register-fields');
+            const submitBtn = document.getElementById('auth-submit-btn');
+            const switchText = document.getElementById('auth-switch-text');
+            const authLink = document.getElementById('auth-link');
+
+            if (isRegisterMode) {
+                title.innerText = "Đăng ký 9A5";
+                regFields.style.display = "block";
+                submitBtn.innerText = "TẠO TÀI KHOẢN";
+                switchText.innerText = "Đã có tài khoản?";
+                authLink.innerText = "Đăng nhập ngay";
+            } else {
+                title.innerText = "Thành viên 9A5";
+                regFields.style.display = "none";
+                submitBtn.innerText = "ĐĂNG NHẬP";
+                switchText.innerText = "Chưa có tài khoản?";
+                authLink.innerText = "Đăng ký ngay";
+            }
+        }
+
+        function toggleLoginModal() {
+            const loginModal = document.getElementById('login-modal');
+            loginModal.style.display = 'none';
             document.body.style.overflow = 'auto';
         }
 
-        // --- HÀM CHO MODAL ĐĂNG NHẬP ---
-        function toggleLoginModal() {
-            const loginModal = document.getElementById('login-modal');
-            const isOpening = (loginModal.style.display !== 'flex');
-            loginModal.style.display = isOpening ? 'flex' : 'none';
-            document.body.style.overflow = isOpening ? 'hidden' : 'auto';
-        }
-
-        // Đóng modal khi click ra ngoài vùng trắng
-        window.onclick = function(event) {
-            const menuModal = document.getElementById('modal');
-            const loginModal = document.getElementById('login-modal');
-            
-            if (event.target == menuModal) { closeModal(); }
-            if (event.target == loginModal) { toggleLoginModal(); }
-        }
-
-        // --- CẤU HÌNH GOOGLE LOGIN ---
+        // Google Login - Nhớ dán ID thật vào đây
         window.onload = function () {
-            // Nhớ thay YOUR_GOOGLE_CLIENT_ID bằng ID thật của bạn
             google.accounts.id.initialize({
-                client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com", 
+                // ĐÂY LÀ MÃ MỚI CỦA BẠN:
+                client_id: "841259510226-c0lbbdn4vp2ummrcrsa9tups6d2mon4v.apps.googleusercontent.com", 
                 callback: handleCredentialResponse
             });
+            
+            // Phần hiển thị nút (giữ nguyên)
             google.accounts.id.renderButton(
                 document.getElementById("buttonDiv"),
                 { theme: "outline", size: "large", width: "250" } 
@@ -329,8 +254,7 @@
         };
 
         function handleCredentialResponse(response) {
-            console.log("Encoded JWT ID token: " + response.credential);
-            alert("Đăng nhập thành công! Chào mừng bạn đã ghé thăm 9A5.");
+            alert("Đăng nhập Google thành công! Chào mừng bạn.");
             toggleLoginModal();
         }
     </script>
