@@ -28,7 +28,7 @@
 
         h1, h2, .modal-title { font-family: 'BoleroesqueHonora', serif; font-weight: normal; }
 
-        /* THANH ĐIỀU HƯỚNG GÓC PHẢI (MỚI) */
+        /* THANH ĐIỀU HƯỚNG GÓC PHẢI (User Menu) */
         .top-nav {
             position: fixed; top: 20px; right: 20px; z-index: 1001;
             display: flex; gap: 10px; align-items: center;
@@ -44,12 +44,17 @@
         }
         .nav-btn:hover { background: var(--secondary); border-color: var(--secondary); color: white; }
         
-        /* Hiển thị tên người dùng sau khi đăng nhập */
-        #user-info {
-            display: none; background: rgba(0,0,0,0.6); 
-            color: white; padding: 8px 15px; border-radius: 50px;
-            backdrop-filter: blur(5px); font-weight: bold;
+        /* Giao diện User khi đã đăng nhập */
+        #user-area {
+            display: none; /* Mặc định ẩn */
+            align-items: center; gap: 10px;
+            background: rgba(0,0,0,0.6); padding: 5px 15px 5px 5px;
+            border-radius: 50px; backdrop-filter: blur(5px);
         }
+        #user-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--secondary); object-fit: cover; }
+        #user-name { color: white; font-weight: bold; font-size: 0.9rem; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .logout-btn { background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; margin-left: 5px; }
+        .logout-btn:hover { background: #c0392b; }
 
         /* HERO SECTION */
         .hero {
@@ -107,8 +112,10 @@
 <body>
 
     <nav class="top-nav">
-        <div id="user-info">
-            <span id="user-name">Chào bạn!</span>
+        <div id="user-area">
+            <img id="user-avatar" src="" alt="Avatar">
+            <span id="user-name"></span>
+            <button class="logout-btn" onclick="handleLogout()">Đăng xuất</button>
         </div>
         
         <div id="auth-buttons" style="display: flex; gap: 10px;">
@@ -161,12 +168,12 @@
             <h2 id="auth-title" style="text-align: center; margin-bottom: 20px; color: var(--primary);">Đăng nhập</h2>
             
             <div id="register-fields" style="display: none;">
-                <input type="text" placeholder="Họ và tên" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #ddd;">
+                <input type="text" id="reg-name" placeholder="Họ và tên của bạn" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #ddd;">
             </div>
-            <input type="email" placeholder="Email" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #ddd;">
-            <input type="password" placeholder="Mật khẩu" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #ddd;">
+            <input type="email" id="auth-email" placeholder="Email" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #ddd;">
+            <input type="password" id="auth-pass" placeholder="Mật khẩu" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #ddd;">
             
-            <button id="auth-submit" class="btn" style="width: 100%; margin-bottom: 15px;">ĐĂNG NHẬP</button>
+            <button id="auth-submit" class="btn" onclick="handleManualAuth()" style="width: 100%; margin-bottom: 15px;">ĐĂNG NHẬP</button>
             
             <div style="text-align: center; margin: 10px 0; color: #777; position: relative;">
                 <span style="background: #fff; padding: 0 10px; position: relative; z-index: 1;">Hoặc</span>
@@ -199,8 +206,8 @@
         <p>Hội Xuân THCS Nguyễn Gia Thiều • 06.02.2026</p>
     </footer>
 
-    <script>
-        // --- LOGIC GIAO DIỆN ---
+    <!-- <script>
+        // --- LOGIC GIAO DIỆN MÓN ĂN ---
         const menuData = {
             'tom-thit': { title: 'Gỏi Cuốn Tôm Thịt', desc: 'Tôm thịt tươi ngon, chấm tương đen.', price: '5.000đ', img: 'https://cdn.tgdd.vn/Files/2021/10/21/1392444/tong-hop-8-cach-lam-goi-cuon-ngon-hap-dan-sieu-de-lam-tai-nha-202110211125270560.jpg' },
             'nem-nuong': { title: 'Gỏi Cuốn Nem Nướng', desc: 'Nem nướng thơm lừng, chấm nước mắm chua ngọt.', price: '5.000đ', img: 'https://nemnuonghungviet.com/nemhungviet/uploads/2024/12/goi-cuon-nem-nuong.jpg' },
@@ -225,9 +232,114 @@
             document.body.style.overflow = 'auto';
         }
 
-        // --- LOGIC ĐĂNG NHẬP / ĐĂNG KÝ ---
+        // --- LOGIC AUTHENTICATION (QUAN TRỌNG) ---
         let currentMode = 'login';
+        
+        // Kiểm tra xem đã đăng nhập chưa khi load trang
+        window.onload = function () {
+            checkLoginState();
+            
+            // Khởi tạo Google Button
+            google.accounts.id.initialize({
+                client_id: "841259510226-c0lbbdn4vp2ummrcrsa9tups6d2mon4v.apps.googleusercontent.com", 
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.getElementById("buttonDiv"),
+                { theme: "outline", size: "large", width: "250" } 
+            );
+        };
 
+        function checkLoginState() {
+            const user = JSON.parse(localStorage.getItem('user_9a5'));
+            if (user) {
+                showUserArea(user);
+            } else {
+                showAuthButtons();
+            }
+        }
+
+        function showUserArea(user) {
+            document.getElementById('auth-buttons').style.display = 'none';
+            document.getElementById('user-area').style.display = 'flex';
+            document.getElementById('user-name').innerText = user.name;
+            document.getElementById('user-avatar').src = user.picture || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+        }
+
+        function showAuthButtons() {
+            document.getElementById('auth-buttons').style.display = 'flex';
+            document.getElementById('user-area').style.display = 'none';
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('user_9a5'); // Xóa dữ liệu lưu trong máy
+            alert("Đã đăng xuất thành công!");
+            location.reload(); // Tải lại trang
+        }
+
+        // Xử lý khi đăng nhập bằng Google thành công
+        function handleCredentialResponse(response) {
+            // Giải mã Token để lấy tên và ảnh
+            const responsePayload = decodeJwtResponse(response.credential);
+            
+            const user = {
+                name: responsePayload.name,
+                picture: responsePayload.picture,
+                email: responsePayload.email
+            };
+
+            // Lưu vào bộ nhớ trình duyệt
+            localStorage.setItem('user_9a5', JSON.stringify(user));
+            
+            alert("Xin chào " + user.name + "! 👋");
+            toggleLoginModal();
+            showUserArea(user);
+        }
+
+        // Hàm giải mã JWT của Google (Để lấy tên thật)
+        function decodeJwtResponse(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+
+        // Xử lý Đăng ký / Đăng nhập thủ công (Giả lập)
+        function handleManualAuth() {
+            const email = document.getElementById('auth-email').value;
+            const pass = document.getElementById('auth-pass').value;
+            const name = document.getElementById('reg-name').value;
+
+            if (!email || !pass) {
+                alert("Vui lòng nhập đầy đủ thông tin!");
+                return;
+            }
+
+            if (currentMode === 'register') {
+                if (!name) { alert("Vui lòng nhập họ tên!"); return; }
+                
+                // Giả lập đăng ký thành công
+                const user = { name: name, picture: '', email: email };
+                localStorage.setItem('user_9a5', JSON.stringify(user));
+                
+                alert("Đăng ký thành công! Chào mừng " + name);
+                toggleLoginModal();
+                showUserArea(user);
+            } else {
+                // Giả lập đăng nhập (luôn thành công với mọi email/pass để test)
+                // Thực tế cần check Database, nhưng ở đây ta cho qua để demo
+                const user = { name: "Thành viên 9A5", picture: '', email: email };
+                localStorage.setItem('user_9a5', JSON.stringify(user));
+                
+                alert("Đăng nhập thành công!");
+                toggleLoginModal();
+                showUserArea(user);
+            }
+        }
+
+        // --- CÁC HÀM POPUP CŨ ---
         function openLoginModal(mode) {
             currentMode = mode;
             updateAuthUI();
@@ -253,7 +365,7 @@
             const authLink = document.getElementById('auth-link');
 
             if (currentMode === 'register') {
-                title.innerText = "Đăng ký thành viên 9A5";
+                title.innerText = "Đăng ký thành viên";
                 submitBtn.innerText = "ĐĂNG KÝ NGAY";
                 registerFields.style.display = "block";
                 switchText.innerText = "Đã có tài khoản?";
@@ -271,30 +383,93 @@
             if (event.target == document.getElementById('modal')) closeModal();
             if (event.target == document.getElementById('login-modal')) toggleLoginModal();
         }
+    </script> -->
+    <script type="module">
+    // 1. Nhập thư viện Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // --- CẤU HÌNH GOOGLE LOGIN (ĐÃ CẬP NHẬT MÃ CỦA BẠN) ---
-        window.onload = function () {
-            google.accounts.id.initialize({
-                // ĐÂY LÀ MÃ MỚI MÌNH LẤY TỪ FILE JSON CỦA BẠN:
-                client_id: "841259510226-c0lbbdn4vp2ummrcrsa9tups6d2mon4v.apps.googleusercontent.com", 
-                callback: handleCredentialResponse
-            });
-            google.accounts.id.renderButton(
-                document.getElementById("buttonDiv"),
-                { theme: "outline", size: "large", width: "250" } 
-            );
-        };
+    // 2. Cấu hình Firebase (Lấy từ ảnh image_8f7b3d.png của bạn)
+    const firebaseConfig = {
+        apiKey: "AIzaSyCg2qA0TODBVNpLCeX0zocuoSNsJTfztDE",
+        authDomain: "hoixuan9a5.firebaseapp.com",
+        databaseURL: "https://hoixuan9a5-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "hoixuan9a5",
+        storageBucket: "hoixuan9a5.firebasestorage.app",
+        messagingSenderId: "344769438813",
+        appId: "1:344769438813:web:301866b870efc2df7fd9b4",
+        measurementId: "G-3NQH4GFB6V"
+    };
 
-        function handleCredentialResponse(response) {
-            // Giả lập đăng nhập thành công
-            alert("Đăng nhập Google thành công! Chào mừng bạn.");
-            toggleLoginModal();
-            
-            // Ẩn nút đăng nhập, hiện tên người dùng
-            document.getElementById('auth-buttons').style.display = 'none';
-            document.getElementById('user-info').style.display = 'flex';
-            document.getElementById('user-name').innerText = "Chào Khang! 👋";
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // 3. Xử lý Đăng ký và lưu vào Database
+    window.handleManualAuth = function() {
+        const name = document.getElementById('reg-name')?.value || "Ẩn danh";
+        const email = document.querySelector('#login-modal input[type="email"]').value;
+        const pass = document.querySelector('#login-modal input[type="password"]').value;
+
+        if (!email || !pass) {
+            alert("Vui lòng nhập email và mật khẩu!");
+            return;
         }
-    </script>
+
+        // Đẩy dữ liệu lên Firebase
+        const userRef = ref(db, 'users');
+        const newUserRef = push(userRef);
+        set(newUserRef, {
+            fullname: name,
+            email: email,
+            password: pass,
+            time: new Date().toLocaleString()
+        }).then(() => {
+            alert("Đăng ký thành công! Dữ liệu đã lưu vào Database.");
+            localStorage.setItem('user_9a5', JSON.stringify({name: name}));
+            location.reload();
+        }).catch(err => alert("Lỗi: " + err.message));
+    };
+
+    // 4. Xử lý Google Login thành công
+    window.handleCredentialResponse = function(response) {
+        const payload = JSON.parse(atob(response.credential.split('.')[1]));
+        const user = { name: payload.name, picture: payload.picture };
+        
+        // Lưu thông tin Google vào Database luôn để quản lý
+        push(ref(db, 'google_users'), {
+            name: payload.name,
+            email: payload.email,
+            time: new Date().toLocaleString()
+        });
+
+        localStorage.setItem('user_9a5', JSON.stringify(user));
+        alert("Chào mừng " + user.name + "!");
+        location.reload();
+    };
+
+    // 5. Logic hiển thị Menu và Logout
+    window.onload = function () {
+        const savedUser = JSON.parse(localStorage.getItem('user_9a5'));
+        if (savedUser) {
+            document.getElementById('auth-buttons').innerHTML = `
+                <div style="display:flex; align-items:center; gap:10px; background:rgba(0,0,0,0.5); padding:5px 15px; border-radius:50px;">
+                    <span style="color:white; font-weight:bold;">Chào ${savedUser.name}!</span>
+                    <button onclick="logout()" style="background:#e74c3c; color:white; border:none; padding:5px 10px; border-radius:20px; cursor:pointer;">Thoát</button>
+                </div>`;
+        }
+
+        // Khởi tạo nút Google (Dùng Client ID từ file JSON bạn gửi)
+        google.accounts.id.initialize({
+            client_id: "841259510226-c0lbbdn4vp2ummrcrsa9tups6d2mon4v.apps.googleusercontent.com",
+            callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(document.getElementById("buttonDiv"), { theme: "outline", size: "large" });
+    };
+
+    window.logout = function() {
+        localStorage.removeItem('user_9a5');
+        location.reload();
+    };
+</script>
 </body>
 </html>
