@@ -385,6 +385,7 @@
         }
     </script> -->
     <script type="module">
+        // 1. IMPORT FIREBASE
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, push, set, get, child } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
@@ -400,22 +401,31 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        let currentMode = 'login';
+        let currentMode = 'login'; // Mặc định là đăng nhập
 
-        // --- HÀM XỬ LÝ ĐĂNG KÝ / ĐĂNG NHẬP THẬT ---
+        // --- SỬA LỖI 1: GIẢI MÃ TÊN GOOGLE TIẾNG VIỆT (Fix lỗi atob) ---
+        function decodeJwtResponse(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+
+        // --- SỬA LỖI 2: LOGIC ĐĂNG NHẬP CÓ KIỂM TRA DATABASE ---
         window.handleManualAuth = function() {
             const name = document.getElementById('reg-name').value;
             const email = document.getElementById('auth-email').value;
             const pass = document.getElementById('auth-pass').value;
 
-            if (!email || !pass) { alert("Nhập đủ Email và Pass nhé!"); return; }
+            if (!email || !pass) { alert("Vui lòng nhập Email và Mật khẩu!"); return; }
 
             const usersRef = ref(db, 'users');
 
             if (currentMode === 'register') {
-                // Chế độ Đăng ký: Lưu mới
-                const newUserRef = push(usersRef);
-                set(newUserRef, {
+                // ĐĂNG KÝ: Lưu mới vào Database
+                push(usersRef, {
                     fullname: name || "Ẩn danh",
                     email: email,
                     password: pass,
@@ -425,47 +435,65 @@
                     loginUser(name || email);
                 });
             } else {
-                // Chế độ Đăng nhập: Kiểm tra Database
+                // ĐĂNG NHẬP: Tải dữ liệu về để soi
+                alert("Đang kiểm tra thông tin..."); // Báo cho người dùng biết
                 get(usersRef).then((snapshot) => {
                     if (snapshot.exists()) {
-                        let found = false;
-                        const data = snapshot.val();
-                        // Duyệt qua danh sách user để check
-                        for (let key in data) {
-                            if (data[key].email === email && data[key].password === pass) {
-                                found = true;
-                                loginUser(data[key].fullname);
-                                break;
+                        const users = snapshot.val();
+                        let foundUser = null;
+                        
+                        // Vòng lặp tìm kiếm user trùng khớp
+                        Object.values(users).forEach(user => {
+                            if (user.email === email && user.password === pass) {
+                                foundUser = user;
                             }
+                        });
+
+                        if (foundUser) {
+                            alert("Đăng nhập thành công!");
+                            loginUser(foundUser.fullname);
+                        } else {
+                            alert("Sai tài khoản hoặc mật khẩu rồi!");
                         }
-                        if (!found) alert("Sai tài khoản hoặc mật khẩu rồi bạn ơi!");
                     } else {
-                        alert("Chưa có ai đăng ký tài khoản nào cả!");
+                        alert("Chưa có dữ liệu nào trong Database!");
                     }
+                }).catch((error) => {
+                    console.error(error);
+                    alert("Lỗi kết nối mạng!");
                 });
             }
         };
 
-        function loginUser(displayName) {
-            localStorage.setItem('user_9a5', JSON.stringify({name: displayName}));
+        // Hàm lưu Session và tải lại trang
+        function loginUser(name) {
+            localStorage.setItem('user_9a5', JSON.stringify({ name: name }));
             location.reload();
         }
 
-        // --- CÁC HÀM GIAO DIỆN KHÁC (GIỮ NGUYÊN) ---
+        // --- CÁC HÀM GIAO DIỆN (GIỮ NGUYÊN) ---
         window.openLoginModal = function(mode) {
             currentMode = mode;
             const title = document.getElementById('auth-title');
             const submitBtn = document.getElementById('auth-submit');
             const regFields = document.getElementById('register-fields');
-            
+            const switchText = document.getElementById('auth-switch-text');
+            const authLink = document.getElementById('auth-link');
+
             if(mode === 'register') {
                 title.innerText = "Đăng ký thành viên";
                 submitBtn.innerText = "ĐĂNG KÝ";
                 regFields.style.display = "block";
+                switchText.innerText = "Đã có tài khoản?";
+                authLink.innerText = "Đăng nhập ngay";
+                authLink.onclick = () => openLoginModal('login');
             } else {
                 title.innerText = "Đăng nhập";
                 submitBtn.innerText = "ĐĂNG NHẬP";
                 regFields.style.display = "none";
+                switchText.innerText = "Chưa có tài khoản?";
+                authLink.innerText = "Đăng ký ngay";
+                authLink.onclick = () => openLoginModal('register');
             }
             document.getElementById('login-modal').style.display = 'flex';
         };
@@ -474,18 +502,18 @@
             document.getElementById('login-modal').style.display = 'none';
         };
 
+        window.handleCredentialResponse = function(response) {
+            // Gọi hàm giải mã tiếng Việt mới viết ở trên
+            const payload = decodeJwtResponse(response.credential);
+            loginUser(payload.name);
+        };
+
         window.logout = function() {
             localStorage.removeItem('user_9a5');
             location.reload();
         };
 
-        window.handleCredentialResponse = function(response) {
-            const payload = JSON.parse(atob(response.credential.split('.')[1]));
-            // Sửa lỗi hiển thị tên Google bằng cách decode UTF-8 nếu cần, 
-            // nhưng meta charset UTF-8 ở bước 1 thường sẽ giải quyết xong.
-            loginUser(payload.name);
-        };
-
+        // Khởi tạo trang
         window.onload = function () {
             const user = JSON.parse(localStorage.getItem('user_9a5'));
             if(user) {
@@ -502,6 +530,34 @@
             });
             google.accounts.id.renderButton(document.getElementById("buttonDiv"), { theme: "outline", size: "large" });
         };
+
+        // Hàm hiện menu món ăn (thêm lại nếu bị mất)
+        const menuData = {
+            'tom-thit': { title: 'Gỏi Cuốn Tôm Thịt', desc: 'Tôm thịt tươi ngon.', price: '5.000đ', img: 'https://cdn.tgdd.vn/Files/2021/10/21/1392444/tong-hop-8-cach-lam-goi-cuon-ngon-hap-dan-sieu-de-lam-tai-nha-202110211125270560.jpg' },
+            'nem-nuong': { title: 'Gỏi Cuốn Nem Nướng', desc: 'Nem nướng thơm lừng.', price: '5.000đ', img: 'https://nemnuonghungviet.com/nemhungviet/uploads/2024/12/goi-cuon-nem-nuong.jpg' },
+            'bi': { title: 'Gỏi Cuốn Bì', desc: 'Bì heo dai giòn.', price: '5.000đ', img: 'https://afamilycdn.com/thumb_w/650/150157425591193600/2021/3/19/bi-cuon99-1-1616150003378626234564.jpg' },
+            'trung': { title: 'Gỏi Cuốn Trứng', desc: 'Trứng chiên vàng ươm.', price: '5.000đ', img: 'https://image.eatencdn.com/image/801b0cd5-3da6-4413-9265-7fad9189eb13/small/image.jpg' },
+            'tai-heo': { title: 'Gỏi Cuốn Tai Heo', desc: 'Tai heo giòn sần sật.', price: '5.000đ', img: 'https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/2024_1_20_638413447115599304_tai-heo-cuon-banh-trang.jpg' }
+        };
+        
+        window.showDetail = function(id) {
+            const item = menuData[id];
+            if(!item) return;
+            document.getElementById('modal-title').innerText = item.title;
+            document.getElementById('modal-desc').innerText = item.desc;
+            document.getElementById('modal-price').innerText = item.price;
+            document.getElementById('modal-img').src = item.img;
+            document.getElementById('modal').style.display = 'flex';
+        };
+        
+        window.closeModal = function() {
+            document.getElementById('modal').style.display = 'none';
+        };
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('modal')) closeModal();
+            if (event.target == document.getElementById('login-modal')) toggleLoginModal();
+        }
     </script>
 </body>
 </html>
