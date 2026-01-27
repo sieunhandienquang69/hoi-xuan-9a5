@@ -10,7 +10,6 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <style>
-        /* FONT CHỮ */
         @font-face {
             font-family: 'BoleroesqueHonora';
             src: url('Boleroesque-Honora-by-Josh-Manh-Nguyen.otf') format('opentype');
@@ -27,162 +26,150 @@
         * { box-sizing: border-box; scroll-behavior: smooth; }
         body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; background-color: var(--light); color: var(--dark); overflow-x: hidden; }
 
-        h1, h2, .modal-title { 
-            font-family: 'BoleroesqueHonora', serif; 
-            font-weight: normal;
+        h1, h2, .modal-title { font-family: 'BoleroesqueHonora', serif; font-weight: normal; }
+
+        /* THANH ĐIỀU HƯỚNG GÓC PHẢI (MỚI) */
+        .top-nav {
+            position: fixed; top: 20px; right: 20px; z-index: 1001;
+            display: flex; gap: 10px; align-items: center;
+        }
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white; padding: 10px 20px; border-radius: 50px;
+            text-decoration: none; font-weight: bold; transition: 0.3s;
+            cursor: pointer; font-size: 0.9rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .nav-btn:hover { background: var(--secondary); border-color: var(--secondary); color: white; }
+        
+        /* Hiển thị tên người dùng sau khi đăng nhập */
+        #user-info {
+            display: none; background: rgba(0,0,0,0.6); 
+            color: white; padding: 8px 15px; border-radius: 50px;
+            backdrop-filter: blur(5px); font-weight: bold;
         }
 
         /* HERO SECTION */
         .hero {
             height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
                         url('https://cdn.netspace.edu.vn/images/2020/04/25/cach-lam-goi-cuon-tom-thit-cuc-ki-hap-dan-245587-800.jpg') center/cover;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             text-align: center; color: white; padding: 20px;
         }
         .hero h1 { font-size: 5rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         .hero p { font-size: 1.5rem; margin-bottom: 30px; }
-
+        
         .info-badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px 20px; border-radius: 50px;
+            background: rgba(255, 255, 255, 0.2); padding: 10px 20px; border-radius: 50px;
             backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);
             margin-bottom: 20px; color: white; font-weight: bold;
         }
 
-        /* SECTION CHUNG */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; }
         .section-title { text-align: center; margin-bottom: 40px; }
         .section-title h2 { font-size: 3.5rem; color: var(--primary); display: inline-block; border-bottom: 3px solid var(--secondary); padding-bottom: 10px; }
-
-        /* GIỚI THIỆU GIAN HÀNG */
         .intro-text { text-align: center; font-size: 1.2rem; line-height: 1.8; max-width: 800px; margin: auto; }
 
         /* MENU CARDS */
-        .menu-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px; margin-top: 40px;
-        }
-        .card {
-            background: white; border-radius: 20px; padding: 30px; text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05); cursor: pointer;
-            transition: 0.3s; border: 1px solid #eee;
-        }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 40px; }
+        .card { background: white; border-radius: 20px; padding: 30px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.05); cursor: pointer; transition: 0.3s; border: 1px solid #eee; }
         .card:hover { transform: translateY(-10px); border-color: var(--secondary); background: #fffdf9; }
         .card h3 { color: var(--primary); font-size: 1.6rem; margin-bottom: 10px; }
         .card-price { color: var(--secondary); font-weight: bold; font-size: 1.4rem; }
 
-        /* LÝ DO CHỌN GIAN HÀNG */
+        /* HIGHLIGHTS */
         .highlights { background: var(--primary); color: white; padding: 80px 20px; text-align: center; }
-        .highlight-grid { 
-            display: grid; grid-template-columns: repeat(3, 1fr); 
-            max-width: 1000px; margin: 40px auto 0; gap: 30px;
-        }
+        .highlight-grid { display: grid; grid-template-columns: repeat(3, 1fr); max-width: 1000px; margin: 40px auto 0; gap: 30px; }
         .h-item i { font-size: 2.5rem; color: var(--secondary); margin-bottom: 15px; display: block; }
-        .h-item h3 { font-size: 1.5rem; margin-bottom: 10px; }
-        .h-item p { font-size: 1rem; opacity: 0.9; }
 
         /* MODAL CHUNG */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); display: none;
-            justify-content: center; align-items: center; z-index: 1000;
-            backdrop-filter: blur(8px);
-        }
-        .modal-content {
-            background: white; width: 90%; max-width: 800px; border-radius: 30px;
-            display: flex; flex-direction: row; overflow: hidden;
-            position: relative; animation: zoomIn 0.3s;
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1100; backdrop-filter: blur(8px); }
+        .modal-content { background: white; width: 90%; max-width: 800px; border-radius: 30px; display: flex; overflow: hidden; position: relative; animation: zoomIn 0.3s; }
         .modal-img { width: 50%; object-fit: cover; background: #eee; min-height: 300px; }
         .modal-info { width: 50%; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
         .modal-title { font-size: 3rem; color: var(--primary); margin-bottom: 15px; line-height: 1; }
-        .modal-desc { font-size: 1.1rem; line-height: 1.6; color: #555; margin-bottom: 20px; }
-        .close-btn { 
-            position: absolute; top: 20px; right: 25px; font-size: 2.5rem; 
-            cursor: pointer; color: #333; z-index: 10;
-        }
+        .close-btn { position: absolute; top: 20px; right: 25px; font-size: 2.5rem; cursor: pointer; color: #333; z-index: 10; }
 
-        /* INPUT TRONG LOGIN */
-        .login-input {
-            width: 100%; padding: 12px; margin-bottom: 15px; 
-            border-radius: 8px; border: 1px solid #ddd; outline: none;
-        }
-        .login-input:focus { border-color: var(--secondary); }
+        .btn { padding: 15px 35px; background: var(--secondary); color: white; text-decoration: none; border-radius: 50px; font-weight: bold; display: inline-block; transition: 0.3s; border: none; cursor: pointer; }
+        .btn:hover { transform: scale(1.05); background: #e67e22; }
 
-        /* MOBILE RESPONSIVE */
         @media (max-width: 768px) {
             .hero h1 { font-size: 3.5rem; }
-            .section-title h2 { font-size: 2.5rem; }
+            .modal-content { flex-direction: column; max-height: 90vh; overflow-y: auto; }
+            .modal-img, .modal-info { width: 100%; }
             .highlight-grid { grid-template-columns: 1fr; }
-            .modal-content { flex-direction: column; height: auto; max-height: 90vh; overflow-y: auto; }
-            .modal-img { width: 100%; height: 250px; }
-            .modal-info { width: 100%; padding: 25px; }
-            .modal-title { font-size: 2.2rem; }
-        }
-
-        .btn {
-            padding: 15px 35px; background: var(--secondary); color: white;
-            text-decoration: none; border-radius: 50px; font-weight: bold;
-            display: inline-block; transition: 0.3s; border: none; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
-
-            
-        }
-        .btn:hover { transform: scale(1.05); background: #e67e22; }
-        .auth-nav {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1001;
-            display: flex;
-            gap: 10px;
-        }
-
-        .nav-btn {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .nav-btn:hover {
-            background: var(--secondary);
-            color: white;
-        }
-
-        /* ẨN/HIỆN TRƯỜNG ĐĂNG KÝ */
-        #register-fields {
-            display: none; /* Mặc định ẩn */
         }
     </style>
+</head>
+<body>
 
-    <nav class="auth-nav">
-        <button class="nav-btn" onclick="openAuthModal('login')">Đăng nhập</button>
-        <button class="nav-btn" onclick="openAuthModal('register')" style="background: var(--secondary); border: none;">Đăng ký</button>
+    <nav class="top-nav">
+        <div id="user-info">
+            <span id="user-name">Chào bạn!</span>
+        </div>
+        
+        <div id="auth-buttons" style="display: flex; gap: 10px;">
+            <button class="nav-btn" onclick="openLoginModal('login')">Đăng nhập</button>
+            <button class="nav-btn" onclick="openLoginModal('register')" style="background: var(--secondary); border-color: var(--secondary);">Đăng ký</button>
+        </div>
     </nav>
+
+    <section class="hero">
+        <div class="info-badge">THCS NGUYỄN GIA THIỀU • 06.02.2026</div>
+        <h1 class="animate__animated animate__fadeInDown">9A5 - CUỐN GÌ CŨNG DÍNH</h1>
+        <p class="animate__animated animate__fadeInUp">"Xuân có hội, 9A5 có Gỏi. Cuốn bao dính, Ăn là ghiền!"</p>
+        <a href="#menu" class="btn">KHÁM PHÁ THỰC ĐƠN</a>
+    </section>
+
+    <div class="container">
+        <div class="section-title"><h2>Gói Trọn Vị Xuân</h2></div>
+        <div class="intro-text">
+            <p>Chào các bạn học sinh Nguyễn Gia Thiều! Bạn muốn ăn ngon nhưng lại sợ béo hay nổi mụn? Ghé ngay 9A5 nhé! Chúng mình mang đến thực đơn Gỏi Cuốn thanh mát, nguyên liệu tươi sạch 100%, chuẩn vị "nhà làm".</p>
+        </div>
+    </div>
+
+    <section id="menu" style="background: #fff; padding: 40px 0;">
+        <div class="container">
+            <div class="section-title"><h2>Thực Đơn Ngũ Sắc</h2></div>
+            <div class="menu-grid">
+                <div class="card" onclick="showDetail('tom-thit')"><h3>Gỏi Cuốn Tôm Thịt</h3><div class="card-price">5.000đ</div></div>
+                <div class="card" onclick="showDetail('nem-nuong')"><h3>Gỏi Cuốn Nem Nướng</h3><div class="card-price">5.000đ</div></div>
+                <div class="card" onclick="showDetail('bi')"><h3>Gỏi Cuốn Bì</h3><div class="card-price">5.000đ</div></div>
+                <div class="card" onclick="showDetail('trung')"><h3>Gỏi Cuốn Trứng</h3><div class="card-price">5.000đ</div></div>
+                <div class="card" onclick="showDetail('tai-heo')"><h3>Gỏi Cuốn Tai Heo</h3><div class="card-price">5.000đ</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="highlights">
+        <div class="container">
+            <div class="section-title"><h2 style="color: white; border-bottom-color: white;">Tại sao chọn 9A5?</h2></div>
+            <div class="highlight-grid">
+                <div class="h-item"><i class="fas fa-leaf"></i><h3>TƯƠI SẠCH</h3><p>Nguyên liệu tươi ngon trong ngày.</p></div>
+                <div class="h-item"><i class="fas fa-mortar-pestle"></i><h3>SỐT BÍ TRUYỀN</h3><p>Công thức độc quyền siêu dính.</p></div>
+                <div class="h-item"><i class="fas fa-camera-retro"></i><h3>VIEW ĐẸP</h3><p>Check-in mẹt tre lá chuối cực xinh.</p></div>
+            </div>
+        </div>
+    </section>
 
     <div class="modal-overlay" id="login-modal">
         <div class="modal-content" style="max-width: 400px; padding: 30px; flex-direction: column;">
             <span class="close-btn" onclick="toggleLoginModal()">&times;</span>
-            <h2 id="auth-title" style="text-align: center; margin-bottom: 20px; color: var(--primary);">Thành viên 9A5</h2>
+            <h2 id="auth-title" style="text-align: center; margin-bottom: 20px; color: var(--primary);">Đăng nhập</h2>
             
-            <div id="register-fields">
-                <input type="text" placeholder="Họ và tên" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd;">
+            <div id="register-fields" style="display: none;">
+                <input type="text" placeholder="Họ và tên" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #ddd;">
             </div>
-
-            <input type="email" placeholder="Email" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd;">
-            <input type="password" placeholder="Mật khẩu" style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ddd;">
+            <input type="email" placeholder="Email" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #ddd;">
+            <input type="password" placeholder="Mật khẩu" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #ddd;">
             
-            <button id="auth-submit-btn" class="btn" style="width: 100%; border: none; cursor: pointer;">ĐĂNG NHẬP</button>
+            <button id="auth-submit" class="btn" style="width: 100%; margin-bottom: 15px;">ĐĂNG NHẬP</button>
             
-            <div style="text-align: center; margin: 20px 0; color: #777; position: relative;">
-                <span style="background: #fff; padding: 0 10px; position: relative; z-index: 1;">Hoặc đăng nhập bằng</span>
+            <div style="text-align: center; margin: 10px 0; color: #777; position: relative;">
+                <span style="background: #fff; padding: 0 10px; position: relative; z-index: 1;">Hoặc</span>
                 <hr style="position: absolute; top: 50%; width: 100%; border: 0; border-top: 1px solid #eee;">
             </div>
 
@@ -190,63 +177,108 @@
             
             <p style="text-align: center; margin-top: 20px; font-size: 0.9rem;">
                 <span id="auth-switch-text">Chưa có tài khoản?</span> 
-                <a href="javascript:void(0)" onclick="switchAuthMode()" id="auth-link" style="color: var(--secondary); font-weight: bold;">Đăng ký ngay</a>
+                <a href="javascript:void(0)" onclick="switchAuthMode()" id="auth-link" style="color: var(--secondary); font-weight: bold; text-decoration: none;">Đăng ký ngay</a>
             </p>
         </div>
     </div>
 
-    <script>
-        // Logic điều khiển Modal Đăng nhập/Đăng ký
-        let isRegisterMode = false;
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <img src="" alt="Món ăn" class="modal-img" id="modal-img">
+            <div class="modal-info">
+                <div class="modal-title" id="modal-title"></div>
+                <p class="modal-desc" id="modal-desc"></p>
+                <div class="card-price" id="modal-price" style="font-size: 2rem;"></div>
+            </div>
+        </div>
+    </div>
 
-        function openAuthModal(mode) {
-            isRegisterMode = (mode === 'register');
+    <footer style="text-align: center; padding: 60px 20px; background: #eee;">
+        <p><strong>LỚP 9A5 - GIAN HÀNG SỐ 04</strong></p>
+        <p>Hội Xuân THCS Nguyễn Gia Thiều • 06.02.2026</p>
+    </footer>
+
+    <script>
+        // --- LOGIC GIAO DIỆN ---
+        const menuData = {
+            'tom-thit': { title: 'Gỏi Cuốn Tôm Thịt', desc: 'Tôm thịt tươi ngon, chấm tương đen.', price: '5.000đ', img: 'https://cdn.tgdd.vn/Files/2021/10/21/1392444/tong-hop-8-cach-lam-goi-cuon-ngon-hap-dan-sieu-de-lam-tai-nha-202110211125270560.jpg' },
+            'nem-nuong': { title: 'Gỏi Cuốn Nem Nướng', desc: 'Nem nướng thơm lừng, chấm nước mắm chua ngọt.', price: '5.000đ', img: 'https://nemnuonghungviet.com/nemhungviet/uploads/2024/12/goi-cuon-nem-nuong.jpg' },
+            'bi': { title: 'Gỏi Cuốn Bì', desc: 'Bì heo dai giòn, thính gạo thơm phức.', price: '5.000đ', img: 'https://afamilycdn.com/thumb_w/650/150157425591193600/2021/3/19/bi-cuon99-1-1616150003378626234564.jpg' },
+            'trung': { title: 'Gỏi Cuốn Trứng', desc: 'Trứng chiên vàng ươm, thanh mát.', price: '5.000đ', img: 'https://image.eatencdn.com/image/801b0cd5-3da6-4413-9265-7fad9189eb13/small/image.jpg' },
+            'tai-heo': { title: 'Gỏi Cuốn Tai Heo', desc: 'Tai heo giòn sần sật, chấm mắm nêm.', price: '5.000đ', img: 'https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/2024_1_20_638413447115599304_tai-heo-cuon-banh-trang.jpg' }
+        };
+
+        function showDetail(id) {
+            const item = menuData[id];
+            if(!item) return;
+            document.getElementById('modal-title').innerText = item.title;
+            document.getElementById('modal-desc').innerText = item.desc;
+            document.getElementById('modal-price').innerText = item.price;
+            document.getElementById('modal-img').src = item.img;
+            document.getElementById('modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- LOGIC ĐĂNG NHẬP / ĐĂNG KÝ ---
+        let currentMode = 'login';
+
+        function openLoginModal(mode) {
+            currentMode = mode;
             updateAuthUI();
             document.getElementById('login-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function toggleLoginModal() {
+            document.getElementById('login-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
         function switchAuthMode() {
-            isRegisterMode = !isRegisterMode;
+            currentMode = (currentMode === 'login') ? 'register' : 'login';
             updateAuthUI();
         }
 
         function updateAuthUI() {
             const title = document.getElementById('auth-title');
-            const regFields = document.getElementById('register-fields');
-            const submitBtn = document.getElementById('auth-submit-btn');
+            const submitBtn = document.getElementById('auth-submit');
+            const registerFields = document.getElementById('register-fields');
             const switchText = document.getElementById('auth-switch-text');
             const authLink = document.getElementById('auth-link');
 
-            if (isRegisterMode) {
-                title.innerText = "Đăng ký 9A5";
-                regFields.style.display = "block";
-                submitBtn.innerText = "TẠO TÀI KHOẢN";
+            if (currentMode === 'register') {
+                title.innerText = "Đăng ký thành viên 9A5";
+                submitBtn.innerText = "ĐĂNG KÝ NGAY";
+                registerFields.style.display = "block";
                 switchText.innerText = "Đã có tài khoản?";
                 authLink.innerText = "Đăng nhập ngay";
             } else {
-                title.innerText = "Thành viên 9A5";
-                regFields.style.display = "none";
+                title.innerText = "Đăng nhập";
                 submitBtn.innerText = "ĐĂNG NHẬP";
+                registerFields.style.display = "none";
                 switchText.innerText = "Chưa có tài khoản?";
                 authLink.innerText = "Đăng ký ngay";
             }
         }
 
-        function toggleLoginModal() {
-            const loginModal = document.getElementById('login-modal');
-            loginModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('modal')) closeModal();
+            if (event.target == document.getElementById('login-modal')) toggleLoginModal();
         }
 
-        // Google Login - Nhớ dán ID thật vào đây
+        // --- CẤU HÌNH GOOGLE LOGIN (ĐÃ CẬP NHẬT MÃ CỦA BẠN) ---
         window.onload = function () {
             google.accounts.id.initialize({
-                // ĐÂY LÀ MÃ MỚI CỦA BẠN:
+                // ĐÂY LÀ MÃ MỚI MÌNH LẤY TỪ FILE JSON CỦA BẠN:
                 client_id: "841259510226-c0lbbdn4vp2ummrcrsa9tups6d2mon4v.apps.googleusercontent.com", 
                 callback: handleCredentialResponse
             });
-            
-            // Phần hiển thị nút (giữ nguyên)
             google.accounts.id.renderButton(
                 document.getElementById("buttonDiv"),
                 { theme: "outline", size: "large", width: "250" } 
@@ -254,8 +286,14 @@
         };
 
         function handleCredentialResponse(response) {
+            // Giả lập đăng nhập thành công
             alert("Đăng nhập Google thành công! Chào mừng bạn.");
             toggleLoginModal();
+            
+            // Ẩn nút đăng nhập, hiện tên người dùng
+            document.getElementById('auth-buttons').style.display = 'none';
+            document.getElementById('user-info').style.display = 'flex';
+            document.getElementById('user-name').innerText = "Chào Khang! 👋";
         }
     </script>
 </body>
