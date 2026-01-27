@@ -385,13 +385,13 @@
         }
     </script> -->
     <script type="module">
+    // 1. Import Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyCg2qA0TODBVNpLCeX0zocuoSNsJTfztDE",
         authDomain: "hoixuan9a5.firebaseapp.com",
-        // DÒNG NÀY CỰC KỲ QUAN TRỌNG VỚI SERVER SINGAPORE:
         databaseURL: "https://hoixuan9a5-default-rtdb.asia-southeast1.firebasedatabase.app",
         projectId: "hoixuan9a5",
         storageBucket: "hoixuan9a5.firebasestorage.app",
@@ -402,39 +402,83 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Đưa hàm ra ngoài window để các nút onclick trong HTML tìm thấy được
+    // --- DỮ LIỆU MÓN ĂN ---
+    const menuData = {
+        'tom-thit': { title: 'Gỏi Cuốn Tôm Thịt', desc: 'Tôm thịt tươi ngon, chấm tương đen.', price: '5.000đ', img: 'https://cdn.tgdd.vn/Files/2021/10/21/1392444/tong-hop-8-cach-lam-goi-cuon-ngon-hap-dan-sieu-de-lam-tai-nha-202110211125270560.jpg' },
+        'nem-nuong': { title: 'Gỏi Cuốn Nem Nướng', desc: 'Nem nướng thơm lừng, chấm nước mắm chua ngọt.', price: '5.000đ', img: 'https://nemnuonghungviet.com/nemhungviet/uploads/2024/12/goi-cuon-nem-nuong.jpg' },
+        'bi': { title: 'Gỏi Cuốn Bì', desc: 'Bì heo dai giòn, thính gạo thơm phức.', price: '5.000đ', img: 'https://afamilycdn.com/thumb_w/650/150157425591193600/2021/3/19/bi-cuon99-1-1616150003378626234564.jpg' },
+        'trung': { title: 'Gỏi Cuốn Trứng', desc: 'Trứng chiên vàng ươm, thanh mát.', price: '5.000đ', img: 'https://image.eatencdn.com/image/801b0cd5-3da6-4413-9265-7fad9189eb13/small/image.jpg' },
+        'tai-heo': { title: 'Gỏi Cuốn Tai Heo', desc: 'Tai heo giòn sần sật, chấm mắm nêm.', price: '5.000đ', img: 'https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/2024_1_20_638413447115599304_tai-heo-cuon-banh-trang.jpg' }
+    };
+
+    // --- CÁC HÀM CẦN "PHƠI" RA NGOÀI ĐỂ HTML DÙNG ĐƯỢC ---
+
+    // 1. Hàm hiện chi tiết món ăn (Sửa lỗi bạn đang gặp)
+    window.showDetail = function(id) {
+        const item = menuData[id];
+        if(!item) return;
+        document.getElementById('modal-title').innerText = item.title;
+        document.getElementById('modal-desc').innerText = item.desc;
+        document.getElementById('modal-price').innerText = item.price;
+        document.getElementById('modal-img').src = item.img;
+        document.getElementById('modal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    };
+
+    // 2. Hàm xử lý đăng ký lưu vào Firebase
     window.handleManualAuth = function() {
         const name = document.getElementById('reg-name').value;
         const email = document.getElementById('auth-email').value;
         const pass = document.getElementById('auth-pass').value;
 
         if (!email || !pass) {
-            alert("Khang ơi, nhập thiếu rồi!");
+            alert("Vui lòng điền đủ email và mật khẩu!");
             return;
         }
 
-        console.log("Đang bắt đầu gửi dữ liệu...");
-
-        // Trỏ vào nhánh 'users'
         const userRef = ref(db, 'users');
-        const newUserRef = push(userRef);
-        
-        set(newUserRef, {
+        push(userRef, {
             fullname: name || "Ẩn danh",
             email: email,
             password: pass,
             time: new Date().toLocaleString()
-        })
-        .then(() => {
-            console.log("Gửi thành công!");
-            alert("Dữ liệu đã nảy số trên Database rồi nhé!");
+        }).then(() => {
+            alert("Đăng ký thành công và đã lưu vào Database!");
             localStorage.setItem('user_9a5', JSON.stringify({name: name || email}));
             location.reload();
-        })
-        .catch((error) => {
-            console.error("Lỗi gửi Firebase:", error);
-            alert("Lỗi: " + error.message);
+        }).catch(err => alert("Lỗi Database: " + err.message));
+    };
+
+    // 3. Hàm đóng Modal
+    window.closeModal = function() {
+        document.getElementById('modal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    };
+
+    // 4. Các hàm Google Login và Logout
+    window.handleCredentialResponse = function(response) {
+        const payload = JSON.parse(atob(response.credential.split('.')[1]));
+        localStorage.setItem('user_9a5', JSON.stringify({name: payload.name}));
+        location.reload();
+    };
+
+    window.logout = function() {
+        localStorage.removeItem('user_9a5');
+        location.reload();
+    };
+
+    // Khởi tạo trang
+    window.onload = function () {
+        const user = JSON.parse(localStorage.getItem('user_9a5'));
+        if(user) {
+            document.getElementById('auth-buttons').innerHTML = `<span style="color:white; margin-right:10px;">Chào ${user.name}</span><button onclick="logout()" class="logout-btn">Thoát</button>`;
+        }
+        
+        google.accounts.id.initialize({
+            client_id: "841259510226-c0lbbdn4vp2ummrcrsa9tups6d2mon4v.apps.googleusercontent.com",
+            callback: handleCredentialResponse
         });
+        google.accounts.id.renderButton(document.getElementById("buttonDiv"), { theme: "outline", size: "large" });
     };
 </script>
 
