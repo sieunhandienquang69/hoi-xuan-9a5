@@ -107,6 +107,21 @@
             .modal-img, .modal-info { width: 100%; }
             .highlight-grid { grid-template-columns: 1fr; }
         }
+
+        /* Style cho phần Bản đồ gian hàng */
+        .map-section { background: #fff; padding: 60px 0; text-align: center; }
+        .map-wrapper { 
+            max-width: 900px; margin: 30px auto; position: relative; 
+            border: 5px solid var(--primary); border-radius: 20px; 
+            overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .map-wrapper img { width: 100%; display: block; transition: 0.5s; }
+        .map-wrapper:hover img { transform: scale(1.02); }
+        .map-note { 
+            display: inline-block; background: var(--secondary); color: white; 
+            padding: 10px 25px; border-radius: 50px; font-weight: bold; 
+            margin-top: -20px; position: relative; z-index: 5;
+        }
     </style>
 </head>
 <body>
@@ -148,6 +163,18 @@
                 Tiếp năng lượng quẩy hội xuân từ sáng đến chiều chẳng mệt.
             </p>
         </div>
+        <section class="map-section">
+            <div class="container">
+                <div class="section-title"><h2>Vị Trí Gian Hàng</h2></div>
+                <div class="map-wrapper">
+                    <img src="https://via.placeholder.com/900x500.png?text=SO+DO+GIAN+HANG+HOI+XUAN" alt="Sơ đồ gian hàng">
+                </div>
+                <div class="map-note animate__animated animate__pulse animate__infinite">
+                    📍 CHÚNG MÌNH Ở ĐÂY: GIAN HÀNG SỐ 03
+                </div>
+                <p style="margin-top: 20px; color: #666;">(Ngay khu vực trung tâm hội xuân, rất dễ tìm nha!)</p>
+            </div>
+        </section>
     </div>
 
     <section id="menu" style="background: #fff; padding: 40px 0;">
