@@ -9,8 +9,8 @@
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
-
     <style>
+        /* Font chữ riêng (Nhớ file này phải có trong máy/hosting) */
         @font-face {
             font-family: 'BoleroesqueHonora';
             src: url('Boleroesque-Honora-by-Josh-Manh-Nguyen.otf') format('opentype');
@@ -29,34 +29,28 @@
 
         h1, h2, .modal-title { font-family: 'BoleroesqueHonora', serif; font-weight: normal; }
 
-        /* THANH ĐIỀU HƯỚNG GÓC PHẢI (User Menu) */
+        /* THANH ĐIỀU HƯỚNG */
         .top-nav {
             position: fixed; top: 20px; right: 20px; z-index: 1001;
             display: flex; gap: 10px; align-items: center;
         }
         .nav-btn {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white; padding: 10px 20px; border-radius: 50px;
-            text-decoration: none; font-weight: bold; transition: 0.3s;
-            cursor: pointer; font-size: 0.9rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 20px; 
+            border-radius: 50px; text-decoration: none; font-weight: bold; transition: 0.3s;
+            cursor: pointer; font-size: 0.9rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         .nav-btn:hover { background: var(--secondary); border-color: var(--secondary); color: white; }
         
-        /* Giao diện User khi đã đăng nhập */
         #user-area {
-            display: none; /* Mặc định ẩn */
-            align-items: center; gap: 10px;
+            display: none; align-items: center; gap: 10px;
             background: rgba(0,0,0,0.6); padding: 5px 15px 5px 5px;
             border-radius: 50px; backdrop-filter: blur(5px);
         }
         #user-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--secondary); object-fit: cover; }
         #user-name { color: white; font-weight: bold; font-size: 0.9rem; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
         .logout-btn { background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; margin-left: 5px; }
-        .logout-btn:hover { background: #c0392b; }
-
+        
         /* HERO SECTION */
         .hero {
             height: 100vh;
@@ -116,7 +110,7 @@
             border: 5px solid var(--primary); border-radius: 20px; 
             overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
-        .map-wrapper img { width: 100%; display: block; transition: 0.5s; }
+        .map-wrapper img { width: 100%; display: block; transition: 0.5s; cursor: zoom-in; }
         .map-wrapper:hover img { transform: scale(1.02); }
         .map-note { 
             display: inline-block; background: var(--secondary); color: white; 
@@ -126,27 +120,19 @@
 
         /* Modal cho Bản đồ - Toàn màn hình */
         .modal-content.full-map {
-            max-width: 95vw; /* Rộng 95% màn hình */
-            height: 90vh;    /* Cao 90% màn hình */
-            display: flex;
-            flex-direction: column;
+            max-width: 95vw; height: 90vh; display: flex; flex-direction: column;
         }
         .full-map .modal-img {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: contain; /* Giữ nguyên tỉ lệ ảnh không bị méo */
-            background: #333;
+            width: 100% !important; height: 100% !important;
+            object-fit: contain; background: #333;
         }
-        /* Ẩn phần thông tin khi xem bản đồ */
         .full-map .modal-info { display: none; }
         
+        /* CSS cho 3D Model Viewer */
         model-viewer {
-            width: 100%;
-            height: 400px;
+            width: 100%; height: 400px;
             background: radial-gradient(#ffffff, #f0f0f0);
-            border-radius: 20px;
-            margin-top: 20px;
-            outline: none;
+            border-radius: 20px; margin-top: 20px; outline: none;
         }
     </style>
 </head>
@@ -176,13 +162,11 @@
         <div class="section-title"><h2>Gói Trọn Vị Xuân</h2></div>
         <div class="intro-text">
             <p style="font-weight: bold; font-size: 1.6rem; color: var(--secondary); margin-bottom: 15px; font-family: 'BoleroesqueHonora', serif;">Chào Nguyễn Gia Thiều ơi!</p>
-            
             <p style="font-size: 1.2rem; margin-bottom: 10px;">
                 Muốn ăn ngon mà chẳng lo nặng bụng?<br>
                 Muốn cuốn miệng mà vẫn mát người?<br>
                 <strong style="color: var(--primary); font-size: 1.3rem;">👉 Ghé 9A5 liền tay nhé!</strong>
             </p>
-
             <p style="margin-top: 20px; font-style: italic; line-height: 2; font-size: 1.1rem; color: #555;">
                 Gỏi cuốn nhà làm – thanh, sạch, tươi, lành,<br>
                 Cuốn một cái là tỉnh, cuốn hai cái là ghiền ngay,<br>
@@ -203,11 +187,9 @@
         </section>
     </div>
 
-
     <section class="container" style="text-align: center; padding-top: 0;">
         <div class="section-title"><h2>Mô Hình 3D Sản Phẩm</h2></div>
         <p>Xoay để ngắm nhìn "độ dính" của gỏi cuốn 9A5 từ mọi góc độ!</p>
-        
         <model-viewer 
             src="goicuon.glb" 
             alt="Gỏi cuốn 3D 9A5" 
@@ -224,15 +206,13 @@
             <p style="text-align: center; margin-top: -30px; margin-bottom: 30px; font-style: italic; color: #666;">
                 Sản phẩm chủ đạo: <b>Gỏi Cuốn Tôm Thịt</b> - Tươi ngon, đậm vị "nhà làm"!
             </p>
-            
             <div class="menu-grid">
                 <div class="card" onclick="showDetail('le')">
                     <div class="badge-hot" style="background: var(--primary); color: white; padding: 5px 10px; border-radius: 10px; font-size: 0.8rem; margin-bottom: 10px; display: inline-block;">ĂN THỬ</div>
                     <h3>Gỏi Cuốn Tôm Thịt</h3>
-                    <div class="card-price">10.000đ/cuốn</div>
+                    <div class="card-price">6.000đ/cuốn</div>
                     <p style="font-size: 0.9rem; color: #777; margin-top: 10px;">Tôm tươi, thịt thơm, rau sạch.</p>
                 </div>
-
                 <div class="card" style="border: 2px solid var(--secondary); background: #fffdf5;" onclick="showDetail('combo15')">
                     <div class="badge-hot" style="background: var(--secondary); color: white; padding: 5px 10px; border-radius: 10px; font-size: 0.8rem; margin-bottom: 10px; display: inline-block;">SIÊU HOT</div>
                     <h3>COMBO TRẢI NGHIỆM</h3>
@@ -244,7 +224,6 @@
                     </ul>
                     <small style="color: var(--secondary); font-weight: bold;">Tiết kiệm & Vui vẻ!</small>
                 </div>
-
                 <div class="card" style="border: 2px solid var(--primary);" onclick="showDetail('combo25')">
                     <div class="badge-hot" style="background: var(--primary); color: white; padding: 5px 10px; border-radius: 10px; font-size: 0.8rem; margin-bottom: 10px; display: inline-block;">TIẾT KIỆM</div>
                     <h3>COMBO NO NÊ</h3>
@@ -287,9 +266,7 @@
                 <span style="background: #fff; padding: 0 10px; position: relative; z-index: 1;">Hoặc</span>
                 <hr style="position: absolute; top: 50%; width: 100%; border: 0; border-top: 1px solid #eee;">
             </div>
-
             <div id="buttonDiv" style="display: flex; justify-content: center;"></div>
-            
             <p style="text-align: center; margin-top: 20px; font-size: 0.9rem;">
                 <span id="auth-switch-text">Chưa có tài khoản?</span> 
                 <a href="javascript:void(0)" onclick="switchAuthMode()" id="auth-link" style="color: var(--secondary); font-weight: bold; text-decoration: none;">Đăng ký ngay</a>
@@ -315,7 +292,6 @@
     </footer>
 
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-
     <script type="module">
         // 1. IMPORT FIREBASE
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -333,9 +309,66 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        let currentMode = 'login'; // Mặc định là đăng nhập
+        let currentMode = 'login'; 
 
-        // --- SỬA LỖI 1: GIẢI MÃ TÊN GOOGLE TIẾNG VIỆT (Fix lỗi atob) ---
+        // 2. DỮ LIỆU MENU
+        const menuData = {
+            'le': { 
+                title: 'Gỏi Cuốn Tôm Thịt', 
+                desc: 'Sự kết hợp hoàn hảo giữa tôm tươi bóc vỏ, thịt ba chỉ thơm ngon và rau sống thanh mát. Chấm cùng nước sốt tương đen bí truyền của 9A5.', 
+                price: '6.000đ', 
+                img: 'https://cdn.tgdd.vn/Files/2021/10/21/1392444/tong-hop-8-cach-lam-goi-cuon-ngon-hap-dan-sieu-de-lam-tai-nha-202110211125270560.jpg' 
+            },
+            'combo15': { 
+                title: 'Combo Trải Nghiệm', 
+                desc: 'Vừa ăn vừa chơi, đánh rơi mệt mỏi! Bạn sẽ nhận được 1 gỏi cuốn + 1 vé tham gia trò chơi (Ném banh dính/Vòng quay may mắn/Bốc thăm trúng thưởng) + 1 phần quà bí ẩn từ 9A5. Bật mí: Món quà này có thể giúp bạn "giải nghiệp" hoặc "thoát ế" đó nha!', 
+                price: '15.000đ', 
+                img: 'https://i.postimg.cc/fbr5qCPv/1d3b1ca3b8d4368a6fc5.jpg' 
+            },
+            'combo25': { 
+                title: 'Combo No Nê', 
+                desc: 'Dành cho những tâm hồn ăn uống bất tận. 3 cuốn gỏi tôm thịt chất lượng cao với mức giá ưu đãi hơn hẳn mua lẻ. Ăn cùng hội bạn thân thì còn gì bằng!', 
+                price: '25.000đ', 
+                img: 'https://i.postimg.cc/j5JVMLMG/1e5abe6bf61d7843210c.jpg' 
+            }
+        };
+
+        // 3. CÁC HÀM XỬ LÝ SỰ KIỆN (Gán vào window)
+        window.zoomMap = function() {
+            const mainMapSrc = document.getElementById('map-img-main').src;
+            const modal = document.getElementById('modal');
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.classList.add('full-map');
+            document.getElementById('modal-img').src = mainMapSrc;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; 
+        };
+
+        window.closeModal = function() {
+            document.getElementById('modal').style.display = 'none';
+            const modalContent = document.getElementById('modal').querySelector('.modal-content');
+            if(modalContent) modalContent.classList.remove('full-map');
+            document.body.style.overflow = 'auto'; 
+        };
+
+        window.showDetail = function(id) {
+            const item = menuData[id];
+            if(!item) return;
+            document.getElementById('modal').querySelector('.modal-content').classList.remove('full-map');
+            document.getElementById('modal-title').innerText = item.title;
+            document.getElementById('modal-desc').innerText = item.desc;
+            document.getElementById('modal-price').innerText = item.price;
+            document.getElementById('modal-img').src = item.img;
+            document.getElementById('modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('modal')) closeModal();
+            if (event.target == document.getElementById('login-modal')) toggleLoginModal();
+        }
+
+        // 4. HÀM XỬ LÝ ĐĂNG NHẬP / GOOGLE
         function decodeJwtResponse(token) {
             var base64Url = token.split('.')[1];
             var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -345,65 +378,47 @@
             return JSON.parse(jsonPayload);
         }
 
-        // --- SỬA LỖI 2: LOGIC ĐĂNG NHẬP CÓ KIỂM TRA DATABASE ---
         window.handleManualAuth = function() {
             const name = document.getElementById('reg-name').value;
             const email = document.getElementById('auth-email').value;
             const pass = document.getElementById('auth-pass').value;
-
             if (!email || !pass) { alert("Vui lòng nhập Email và Mật khẩu!"); return; }
 
             const usersRef = ref(db, 'users');
-
             if (currentMode === 'register') {
-                // ĐĂNG KÝ: Lưu mới vào Database
                 push(usersRef, {
                     fullname: name || "Ẩn danh",
-                    email: email,
-                    password: pass,
+                    email: email, password: pass,
                     time: new Date().toLocaleString()
                 }).then(() => {
                     alert("Đăng ký thành công!");
                     loginUser(name || email);
                 });
             } else {
-                // ĐĂNG NHẬP: Tải dữ liệu về để soi
-                alert("Đang kiểm tra thông tin..."); // Báo cho người dùng biết
+                alert("Đang kiểm tra thông tin...");
                 get(usersRef).then((snapshot) => {
                     if (snapshot.exists()) {
                         const users = snapshot.val();
                         let foundUser = null;
-                        
-                        // Vòng lặp tìm kiếm user trùng khớp
                         Object.values(users).forEach(user => {
-                            if (user.email === email && user.password === pass) {
-                                foundUser = user;
-                            }
+                            if (user.email === email && user.password === pass) foundUser = user;
                         });
-
                         if (foundUser) {
                             alert("Đăng nhập thành công!");
                             loginUser(foundUser.fullname);
                         } else {
                             alert("Sai tài khoản hoặc mật khẩu rồi!");
                         }
-                    } else {
-                        alert("Chưa có dữ liệu nào trong Database!");
-                    }
-                }).catch((error) => {
-                    console.error(error);
-                    alert("Lỗi kết nối mạng!");
-                });
+                    } else { alert("Chưa có dữ liệu nào trong Database!"); }
+                }).catch((error) => { console.error(error); alert("Lỗi kết nối mạng!"); });
             }
         };
 
-        // Hàm lưu Session và tải lại trang
         function loginUser(name) {
             localStorage.setItem('user_9a5', JSON.stringify({ name: name }));
             location.reload();
         }
 
-        // --- CÁC HÀM GIAO DIỆN (GIỮ NGUYÊN) ---
         window.openLoginModal = function(mode) {
             currentMode = mode;
             const title = document.getElementById('auth-title');
@@ -414,7 +429,7 @@
 
             if(mode === 'register') {
                 title.innerText = "Đăng ký thành viên";
-                submitBtn.innerText = "ĐĂNG KÝ";
+                submitBtn.innerText = "ĐĂNG KÝ NGAY";
                 regFields.style.display = "block";
                 switchText.innerText = "Đã có tài khoản?";
                 authLink.innerText = "Đăng nhập ngay";
@@ -435,7 +450,6 @@
         };
 
         window.handleCredentialResponse = function(response) {
-            // Gọi hàm giải mã tiếng Việt mới viết ở trên
             const payload = decodeJwtResponse(response.credential);
             loginUser(payload.name);
         };
@@ -445,7 +459,7 @@
             location.reload();
         };
 
-        // Khởi tạo trang
+        // KHỞI TẠO TRANG
         window.onload = function () {
             const user = JSON.parse(localStorage.getItem('user_9a5'));
             if(user) {
@@ -455,97 +469,12 @@
                         <button onclick="logout()" style="background:#ff4757; color:white; border:none; padding:4px 10px; border-radius:15px; cursor:pointer;">Thoát</button>
                     </div>`;
             }
-            
             google.accounts.id.initialize({
                 client_id: "841259510226-c0lbbdn4vp2ummrcrsa9tups6d2mon4v.apps.googleusercontent.com",
                 callback: handleCredentialResponse
             });
             google.accounts.id.renderButton(document.getElementById("buttonDiv"), { theme: "outline", size: "large" });
         };
-
-        // Hàm hiện menu món ăn (thêm lại nếu bị mất)
-        const menuData = {
-            'le': { 
-                title: 'Gỏi Cuốn Tôm Thịt', 
-                desc: 'Sự kết hợp hoàn hảo giữa tôm tươi bóc vỏ, thịt ba chỉ thơm ngon và rau sống thanh mát. Chấm cùng nước sốt tương đen bí truyền của 9A5.', 
-                price: '10.000đ', 
-                img: 'https://cdn.tgdd.vn/Files/2021/10/21/1392444/tong-hop-8-cach-lam-goi-cuon-ngon-hap-dan-sieu-de-lam-tai-nha-202110211125270560.jpg' 
-            },
-            'combo15': { 
-                title: 'Combo Trải Nghiệm', 
-                desc: 'Vừa ăn vừa chơi, đánh rơi mệt mỏi! Bạn sẽ nhận được 1 gỏi cuốn + 1 vé tham gia trò chơi (Ném banh dính/Vòng quay may mắn/Bốc thăm trúng thưởng) + 1 phần quà bí ẩn từ 9A5. Bật mí: Món quà này có thể giúp bạn "giải nghiệp" hoặc "thoát ế" đó nha!', 
-                price: '15.000đ', 
-                img: 'https://i.postimg.cc/fbr5qCPv/1d3b1ca3b8d4368a6fc5.jpg' // Đã cập nhật link trực tiếp cho Combo 15k
-            },
-            'combo25': { 
-                title: 'Combo No Nê', 
-                desc: 'Dành cho những tâm hồn ăn uống bất tận. 3 cuốn gỏi tôm thịt chất lượng cao với mức giá ưu đãi hơn hẳn mua lẻ. Ăn cùng hội bạn thân thì còn gì bằng!', 
-                price: '25.000đ', 
-                img: 'https://i.postimg.cc/j5JVMLMG/1e5abe6bf61d7843210c.jpg' // Đã cập nhật link trực tiếp cho Combo 25k
-            }
-        };
-        
-        window.showDetail = function(id) {
-            const item = menuData[id];
-            if(!item) return;
-            document.getElementById('modal-title').innerText = item.title;
-            document.getElementById('modal-desc').innerText = item.desc;
-            document.getElementById('modal-price').innerText = item.price;
-            document.getElementById('modal-img').src = item.img;
-            document.getElementById('modal').style.display = 'flex';
-        };
-        
-        window.closeModal = function() {
-            document.getElementById('modal').style.display = 'none';
-        };
-
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('modal')) closeModal();
-            if (event.target == document.getElementById('login-modal')) toggleLoginModal();
-        }
-        
-        // 1. Hàm phóng to bản đồ
-        window.zoomMap = function() {
-            const mainMapSrc = document.getElementById('map-img-main').src;
-            const modal = document.getElementById('modal');
-            const modalContent = modal.querySelector('.modal-content');
-
-            // Thêm class "full-map" để ảnh to ra và ẩn chữ đi
-            modalContent.classList.add('full-map');
-            
-            document.getElementById('modal-img').src = mainMapSrc;
-            modal.style.display = 'flex';
-            
-            // KHÓA CUỘN TRANG
-            document.body.style.overflow = 'hidden'; 
-        };
-
-        // 2. Hàm đóng Modal (Dùng chung cho cả món ăn và bản đồ)
-        window.closeModal = function() {
-            document.getElementById('modal').style.display = 'none';
-            const modalContent = document.getElementById('modal').querySelector('.modal-content');
-            if(modalContent) modalContent.classList.remove('full-map');
-            
-            // ĐÂY LÀ DÒNG QUAN TRỌNG ĐỂ HẾT BỊ LỖI SCROLL
-            document.body.style.overflow = 'auto'; 
-        };
-
-        // 3. Hàm xem chi tiết món ăn (Cũng phải có mở khóa cuộn)
-        window.showDetail = function(id) {
-            const item = menuData[id];
-            if(!item) return;
-            
-            // Đảm bảo không có class của bản đồ
-            document.getElementById('modal').querySelector('.modal-content').classList.remove('full-map');
-            
-            document.getElementById('modal-title').innerText = item.title;
-            document.getElementById('modal-desc').innerText = item.desc;
-            document.getElementById('modal-price').innerText = item.price;
-            document.getElementById('modal-img').src = item.img;
-            
-            document.getElementById('modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Khóa cuộn khi xem món
-        };
     </script>
-    </body>
+</body>
 </html>
