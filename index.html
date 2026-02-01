@@ -10,7 +10,6 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <style>
-        /* Font chữ riêng (Nhớ file này phải có trong máy/hosting) */
         @font-face {
             font-family: 'BoleroesqueHonora';
             src: url('Boleroesque-Honora-by-Josh-Manh-Nguyen.otf') format('opentype');
@@ -71,7 +70,37 @@
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; }
         .section-title { text-align: center; margin-bottom: 40px; }
         .section-title h2 { font-size: 3.5rem; color: var(--primary); display: inline-block; border-bottom: 3px solid var(--secondary); padding-bottom: 10px; }
-        .intro-text { text-align: center; font-size: 1.2rem; line-height: 1.8; max-width: 800px; margin: auto; }
+        
+        /* LAYOUT MỚI: INTRO KẾT HỢP 3D */
+        .intro-layout {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .intro-text { 
+            flex: 1; 
+            font-size: 1.2rem; 
+            line-height: 1.8; 
+            text-align: left; /* Căn trái cho đẹp khi có 2 cột */
+        }
+
+        .intro-model {
+            flex: 1;
+            height: 400px;
+            /* Tạo khung tròn mờ phía sau để làm nổi bật 3D mà không bị cứng */
+            background: radial-gradient(circle, rgba(45,90,39,0.1) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+        }
+
+        /* 3D Model Viewer Style Mới - Trong suốt */
+        model-viewer {
+            width: 100%; height: 100%;
+            background-color: transparent; /* Nền trong suốt */
+            outline: none;
+        }
 
         /* MENU CARDS */
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 40px; }
@@ -96,15 +125,8 @@
         .btn { padding: 15px 35px; background: var(--secondary); color: white; text-decoration: none; border-radius: 50px; font-weight: bold; display: inline-block; transition: 0.3s; border: none; cursor: pointer; }
         .btn:hover { transform: scale(1.05); background: #e67e22; }
 
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 3.5rem; }
-            .modal-content { flex-direction: column; max-height: 90vh; overflow-y: auto; }
-            .modal-img, .modal-info { width: 100%; }
-            .highlight-grid { grid-template-columns: 1fr; }
-        }
-
         /* Style cho phần Bản đồ gian hàng */
-        .map-section { background: #fff; padding: 60px 0; text-align: center; }
+        .map-section { background: #fff; padding: 60px 0; text-align: center; border-top: 1px dashed #ddd; margin-top: 40px;}
         .map-wrapper { 
             max-width: 900px; margin: 30px auto; position: relative; 
             border: 5px solid var(--primary); border-radius: 20px; 
@@ -118,21 +140,21 @@
             margin-top: -20px; position: relative; z-index: 5;
         }
 
-        /* Modal cho Bản đồ - Toàn màn hình */
-        .modal-content.full-map {
-            max-width: 95vw; height: 90vh; display: flex; flex-direction: column;
-        }
-        .full-map .modal-img {
-            width: 100% !important; height: 100% !important;
-            object-fit: contain; background: #333;
-        }
+        /* Modal cho Bản đồ */
+        .modal-content.full-map { max-width: 95vw; height: 90vh; display: flex; flex-direction: column; }
+        .full-map .modal-img { width: 100% !important; height: 100% !important; object-fit: contain; background: #333; }
         .full-map .modal-info { display: none; }
         
-        /* CSS cho 3D Model Viewer */
-        model-viewer {
-            width: 100%; height: 400px;
-            background: radial-gradient(#ffffff, #f0f0f0);
-            border-radius: 20px; margin-top: 20px; outline: none;
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3.5rem; }
+            .modal-content { flex-direction: column; max-height: 90vh; overflow-y: auto; }
+            .modal-img, .modal-info { width: 100%; }
+            .highlight-grid { grid-template-columns: 1fr; }
+            
+            /* Sửa lại layout Intro trên mobile thành dọc */
+            .intro-layout { flex-direction: column-reverse; text-align: center; }
+            .intro-text { text-align: center; }
         }
     </style>
 </head>
@@ -160,45 +182,46 @@
 
     <div class="container">
         <div class="section-title"><h2>Gói Trọn Vị Xuân</h2></div>
-        <div class="intro-text">
-            <p style="font-weight: bold; font-size: 1.6rem; color: var(--secondary); margin-bottom: 15px; font-family: 'BoleroesqueHonora', serif;">Chào Nguyễn Gia Thiều ơi!</p>
-            <p style="font-size: 1.2rem; margin-bottom: 10px;">
-                Muốn ăn ngon mà chẳng lo nặng bụng?<br>
-                Muốn cuốn miệng mà vẫn mát người?<br>
-                <strong style="color: var(--primary); font-size: 1.3rem;">👉 Ghé 9A5 liền tay nhé!</strong>
-            </p>
-            <p style="margin-top: 20px; font-style: italic; line-height: 2; font-size: 1.1rem; color: #555;">
-                Gỏi cuốn nhà làm – thanh, sạch, tươi, lành,<br>
-                Cuốn một cái là tỉnh, cuốn hai cái là ghiền ngay,<br>
-                Tiếp năng lượng quẩy hội xuân từ sáng đến chiều chẳng mệt.
-            </p>
-        </div>
-        <section class="map-section">
-            <div class="container">
-                <div class="section-title"><h2>Vị Trí Gian Hàng</h2></div>
-                <div class="map-wrapper" onclick="zoomMap()">
-                    <img src="https://filethcs.hcm.shieldixcloud.com/UploadImages/news//2026/thcsnguyengiathieu/admin/2026_1/27/61949992813680587484537895478649237640618104n_2712026163.jpg?w=1130" id="map-img-main" alt="Sơ đồ gian hàng">
-                </div>
-                <div class="map-note animate__animated animate__pulse animate__infinite">
-                    📍 CHÚNG MÌNH Ở ĐÂY: GIAN HÀNG SỐ 03
-                </div>
-                <p style="margin-top: 20px; color: #666;">(Ngay góc trái khu B, rất dễ tìm nha!)</p>
+        
+        <div class="intro-layout">
+            <div class="intro-text">
+                <p style="font-weight: bold; font-size: 1.8rem; color: var(--secondary); margin-bottom: 20px; font-family: 'BoleroesqueHonora', serif;">
+                    Chào Nguyễn Gia Thiều ơi!
+                </p>
+                <p style="margin-bottom: 15px;">
+                    Muốn ăn ngon mà chẳng lo nặng bụng? Muốn cuốn miệng mà vẫn mát người?
+                    <br><strong style="color: var(--primary); font-size: 1.3rem;">👉 Ghé 9A5 liền tay nhé!</strong>
+                </p>
+                <p style="font-style: italic; color: #555;">
+                    Gỏi cuốn nhà làm – thanh, sạch, tươi, lành. Cuốn một cái là tỉnh, cuốn hai cái là ghiền ngay!
+                    Hãy thử xoay chiếc gỏi cuốn bên cạnh để cảm nhận độ hấp dẫn nhé! ➔
+                </p>
             </div>
+
+            <div class="intro-model">
+                <model-viewer 
+                    src="goicuon.glb" 
+                    alt="Gỏi cuốn 3D 9A5" 
+                    auto-rotate 
+                    camera-controls 
+                    shadow-intensity="1"
+                    disable-zoom
+                    ar>
+                </model-viewer>
+            </div>
+        </div>
+
+        <section class="map-section">
+            <div class="section-title"><h2>Vị Trí Gian Hàng</h2></div>
+            <div class="map-wrapper" onclick="zoomMap()">
+                <img src="https://filethcs.hcm.shieldixcloud.com/UploadImages/news//2026/thcsnguyengiathieu/admin/2026_1/27/61949992813680587484537895478649237640618104n_2712026163.jpg?w=1130" id="map-img-main" alt="Sơ đồ gian hàng">
+            </div>
+            <div class="map-note animate__animated animate__pulse animate__infinite">
+                📍 CHÚNG MÌNH Ở ĐÂY: GIAN HÀNG SỐ 03
+            </div>
+            <p style="margin-top: 20px; color: #666;">(Ngay góc trái khu B, rất dễ tìm nha!)</p>
         </section>
     </div>
-
-    <section class="container" style="text-align: center; padding-top: 0;">
-        <div class="section-title"><h2>Mô Hình 3D Sản Phẩm</h2></div>
-        <p>Xoay để ngắm nhìn "độ dính" của gỏi cuốn 9A5 từ mọi góc độ!</p>
-        <model-viewer 
-            src="goicuon.glb" 
-            alt="Gỏi cuốn 3D 9A5" 
-            auto-rotate 
-            camera-controls 
-            shadow-intensity="1"
-            ar>
-        </model-viewer>
-    </section>
 
     <section id="menu" style="background: #fff; padding: 40px 0;">
         <div class="container">
@@ -210,7 +233,7 @@
                 <div class="card" onclick="showDetail('le')">
                     <div class="badge-hot" style="background: var(--primary); color: white; padding: 5px 10px; border-radius: 10px; font-size: 0.8rem; margin-bottom: 10px; display: inline-block;">ĂN THỬ</div>
                     <h3>Gỏi Cuốn Tôm Thịt</h3>
-                    <div class="card-price">6.000đ/cuốn</div>
+                    <div class="card-price">10.000đ/cuốn</div>
                     <p style="font-size: 0.9rem; color: #777; margin-top: 10px;">Tôm tươi, thịt thơm, rau sạch.</p>
                 </div>
                 <div class="card" style="border: 2px solid var(--secondary); background: #fffdf5;" onclick="showDetail('combo15')">
@@ -293,7 +316,6 @@
 
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
     <script type="module">
-        // 1. IMPORT FIREBASE
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, push, set, get, child } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
@@ -311,29 +333,30 @@
         const db = getDatabase(app);
         let currentMode = 'login'; 
 
-        // 2. DỮ LIỆU MENU
+        // DỮ LIỆU MENU
         const menuData = {
             'le': { 
                 title: 'Gỏi Cuốn Tôm Thịt', 
                 desc: 'Sự kết hợp hoàn hảo giữa tôm tươi bóc vỏ, thịt ba chỉ thơm ngon và rau sống thanh mát. Chấm cùng nước sốt tương đen bí truyền của 9A5.', 
-                price: '6.000đ', 
+                // ĐÃ SỬA GIÁ 10.000Đ Ở ĐÂY
+                price: '10.000đ', 
                 img: 'https://cdn.tgdd.vn/Files/2021/10/21/1392444/tong-hop-8-cach-lam-goi-cuon-ngon-hap-dan-sieu-de-lam-tai-nha-202110211125270560.jpg' 
             },
             'combo15': { 
                 title: 'Combo Trải Nghiệm', 
-                desc: 'Vừa ăn vừa chơi, đánh rơi mệt mỏi! Bạn sẽ nhận được 1 gỏi cuốn + 1 vé tham gia trò chơi (Ném banh dính/Vòng quay may mắn/Bốc thăm trúng thưởng) + 1 phần quà bí ẩn từ 9A5. Bật mí: Món quà này có thể giúp bạn "giải nghiệp" hoặc "thoát ế" đó nha!', 
+                desc: 'Vừa ăn vừa chơi, đánh rơi mệt mỏi! Bạn sẽ nhận được 1 gỏi cuốn + 1 vé tham gia trò chơi (Ném banh dính/Vòng quay may mắn/Bốc thăm trúng thưởng) + 1 phần quà bí ẩn từ 9A5.', 
                 price: '15.000đ', 
                 img: 'https://i.postimg.cc/fbr5qCPv/1d3b1ca3b8d4368a6fc5.jpg' 
             },
             'combo25': { 
                 title: 'Combo No Nê', 
-                desc: 'Dành cho những tâm hồn ăn uống bất tận. 3 cuốn gỏi tôm thịt chất lượng cao với mức giá ưu đãi hơn hẳn mua lẻ. Ăn cùng hội bạn thân thì còn gì bằng!', 
+                desc: '3 cuốn gỏi tôm thịt chất lượng cao với mức giá ưu đãi hơn hẳn mua lẻ. Ăn cùng hội bạn thân thì còn gì bằng!', 
                 price: '25.000đ', 
                 img: 'https://i.postimg.cc/j5JVMLMG/1e5abe6bf61d7843210c.jpg' 
             }
         };
 
-        // 3. CÁC HÀM XỬ LÝ SỰ KIỆN (Gán vào window)
+        // CÁC HÀM XỬ LÝ SỰ KIỆN
         window.zoomMap = function() {
             const mainMapSrc = document.getElementById('map-img-main').src;
             const modal = document.getElementById('modal');
@@ -368,7 +391,7 @@
             if (event.target == document.getElementById('login-modal')) toggleLoginModal();
         }
 
-        // 4. HÀM XỬ LÝ ĐĂNG NHẬP / GOOGLE
+        // GOOGLE LOGIN & FIREBASE
         function decodeJwtResponse(token) {
             var base64Url = token.split('.')[1];
             var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -459,7 +482,6 @@
             location.reload();
         };
 
-        // KHỞI TẠO TRANG
         window.onload = function () {
             const user = JSON.parse(localStorage.getItem('user_9a5'));
             if(user) {
