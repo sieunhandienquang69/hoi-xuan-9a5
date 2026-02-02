@@ -50,14 +50,13 @@
         .section-title { text-align: center; margin-bottom: 40px; }
         .section-title h2 { font-size: 3.5rem; color: var(--primary); display: inline-block; border-bottom: 3px solid var(--secondary); padding-bottom: 10px; }
         
-        /* --- CẤU TRÚC 3D MỚI --- */
+        /* --- CẤU TRÚC 3D (DESKTOP) --- */
         .intro-layout {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 40px;
             margin-bottom: 60px;
-            /* Mặc định Desktop: Text bên trái, 3D bên phải */
         }
         
         .intro-text { 
@@ -69,10 +68,11 @@
 
         .intro-model {
             flex: 1;
-            height: 400px; /* Chiều cao cố định trên Desktop */
+            height: 450px; /* Tăng chiều cao lên chút cho đẹp */
             width: 100%;
             background: radial-gradient(circle, rgba(45,90,39,0.1) 0%, rgba(255,255,255,0) 70%);
             border-radius: 20px;
+            position: relative; /* Quan trọng để giữ vị trí */
         }
 
         model-viewer {
@@ -80,6 +80,7 @@
             height: 100%;
             background-color: transparent; 
             outline: none;
+            display: block; /* Đảm bảo nó là khối hiển thị */
         }
 
         /* MENU CARDS */
@@ -127,25 +128,36 @@
         .full-map .modal-img { width: 100% !important; height: 100% !important; object-fit: contain; background: #333; }
         .full-map .modal-info { display: none; }
         
-        /* --- MOBILE RESPONSIVE (SỬA LỖI MẤT 3D TẠI ĐÂY) --- */
+        /* --- MOBILE RESPONSIVE (ĐÃ SỬA LỖI MẤT 3D) --- */
         @media (max-width: 768px) {
             .hero h1 { font-size: 3.5rem; }
             .modal-content { flex-direction: column; max-height: 90vh; overflow-y: auto; }
             .modal-img, .modal-info { width: 100%; }
             .highlight-grid { grid-template-columns: 1fr; }
             
-            /* Sửa lỗi hiển thị 3D trên Mobile */
+            /* Sửa Layout Intro: Xếp dọc */
             .intro-layout { 
-                flex-direction: column-reverse; /* Đưa 3D lên trên, Text xuống dưới */
-                text-align: center; 
+                flex-direction: column-reverse; /* Đảo ngược: 3D lên trên, chữ xuống dưới */
+                display: flex;
                 gap: 20px;
             }
             .intro-text { text-align: center; }
             
-            /* BẮT BUỘC có chiều cao tối thiểu để không bị mất trên điện thoại */
+            /* CƯỠNG CHẾ CHIỀU CAO CHO MOBILE */
             .intro-model {
-                min-height: 350px; 
+                display: block !important;
+                width: 100% !important;
+                height: 400px !important; /* Chiều cao cố định bắt buộc */
+                min-height: 400px !important;
+                flex: none; /* Không cho phép co giãn theo flexbox */
                 margin-bottom: 20px;
+                background: radial-gradient(circle, rgba(45,90,39,0.1) 0%, rgba(255,255,255,0) 80%);
+            }
+
+            /* Đảm bảo model-viewer cũng full height */
+            model-viewer {
+                width: 100% !important;
+                height: 100% !important;
             }
         }
     </style>
@@ -185,7 +197,8 @@
                     camera-controls 
                     shadow-intensity="1"
                     disable-zoom
-                    ar>
+                    ar
+                    style="width: 100%; height: 100%;">
                 </model-viewer>
             </div>
         </div>
@@ -193,7 +206,7 @@
         <section class="map-section">
             <div class="section-title"><h2>Vị Trí Gian Hàng</h2></div>
             <div class="map-wrapper" onclick="zoomMap()">
-                <img src="https://filethcs.hcm.edu.vn/UploadImages/news//2026/thcsnguyengiathieu/admin/2026_1/27/61949992813680587484537895478649237640618104n_2712026163.jpg?w=1800" id="map-img-main" alt="Sơ đồ gian hàng">
+                <img src="http://filethcs.hcm.edu.vn/UploadImages/news//2026/thcsnguyengiathieu/admin/2026_1/27/61949992813680587484537895478649237640618104n_2712026163.jpg?w=1800" id="map-img-main" alt="Sơ đồ gian hàng">
             </div>
             <div class="map-note animate__animated animate__pulse animate__infinite">
                 📍 CHÚNG MÌNH Ở ĐÂY: GIAN HÀNG SỐ 03
@@ -273,7 +286,6 @@
     </footer>
 
     <script>
-        // DỮ LIỆU MENU CẬP NHẬT
         const menuData = {
             'le': { 
                 title: 'Gỏi Cuốn Tôm Thịt', 
@@ -295,7 +307,6 @@
             }
         };
 
-        // CÁC HÀM XỬ LÝ SỰ KIỆN
         function zoomMap() {
             const mainMapSrc = document.getElementById('map-img-main').src;
             const modal = document.getElementById('modal');
